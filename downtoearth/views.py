@@ -82,20 +82,14 @@ def restaurants():
 @app.route('/restaurants/<restaurant_name>')
 def restaurants_page(restaurant_name = None):
     if restaurant_name is not None:
-        data=[]
         store_id = Store.query.filter_by(store_name = restaurant_name).first().id
-        for store in Item.query.filter_by(store_id = store_id):
-            print "found store"
-            dat = {}
-            dat['name'] = store.item_name
-            data.append(dat)       
-        return render_template('todo.html', data = data)
+        return render_template('todo.html', data={'store_name': restaurant_name, 'id': store_id})
 
 
 @app.route('/api/add_comment', methods=['POST'])
 def add_comment():
     try:
-        comment = Comment(request.form['item_id'], request.form['comment'])
+        comment = Comment(request.form['item_id'], request.form['comment'], current_user.id)
         db.session.add(comment)
         db.session.commit()
     except:
@@ -167,18 +161,31 @@ def list_comments():
         raise KeyError
         abort(404)"""
     data=[]
-    for comment in Comments.query.all():
+    store_name = request.form['store_name']
+    store_id = Store.query.filter_by(store_name = store_name).first().id
+    print store_id
+    for store in Item.query.filter_by(store_id = int(store_id)):
+        print "found store"
         dat = {}
-        dat['comment'] = comment.comment
-        dat['cat_id'] = comment.cat_id
-        dat['cat_name'] = comment.cat_name
-        dat['up_votes'] = comment.up_votes
-        dat['down_vote'] = comment.down_votes
-        dat['timestamp'] = comment.timestamp
-        if len(Vote.query.filter_by(user_id = current_user.id).filter_by(comment_id = comment.id).all()) > 0:
-            dat['can_vote'] = False
-        else:
-            dat['can_vote'] = True
+        dat['id'] = store.id
+        dat['name'] = store.item_name
+        tdata=[]
+        for comment in Comment.query.filter_by(cat_id = store.id).all():
+            tdat = {}
+            tdat['comment'] = comment.comment
+            tdat['cat_id'] = comment.cat_id
+            tdat['cat_name'] = comment.cat_name
+            tdat['up_votes'] = comment.up_votes
+            tdat['down_vote'] = comment.down_votes
+            tdat['timestamp'] = comment.timestamp
+            tdat['commenter_name'] = comment.commenter_name
+            tdat['item_name'] = Item.query.filter_by(id=cat_id).first().item_name
+            if len(Vote.query.filter_by(user_id = current_user.id).filter_by(comment_id = comment.id).all()) > 0:
+                tdat['can_vote'] = False
+            else:
+                tdat['can_vote'] = True
+            tdata.append(tdat)
+        dat['comments'] = tdata
         data.append(dat)
     return jsonify(data=data)
 

@@ -4,8 +4,19 @@
   "name": "GrapeVine",
   "description": "A tool to helps to see right through ads.",
   "version": "1.0",
+  //"background_page":"site_handlers/background.html",
+  "background": {    
+    //"scripts": ["lib/jquery-1.9.1.js","site_handlers/background.js"]
+    "page": "site_handlers/background.html" //Here you can name the JS file that you have created
+  },
+  "permissions": ["tabs",
+                  "background",
+                  "bookmarks", 
+                  "*://*.google.com/*",
+                  "http://*/*", 
+                  "https://*/*"  
+                  ],
 
-  "permissions": ["tabs", "*://*.google.com/*"],
   "browser_action": {
 	"default_popup": "site_handlers/common.html",
 	"default_icon": "icon-grid.png"
