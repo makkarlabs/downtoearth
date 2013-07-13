@@ -44,6 +44,10 @@ def login():
 #def is_subscribed(user):
 #    return User.query.filter_by(id=user.id).first().is_subscribed
 
+@app.route('/restaurants')
+def restaurants():
+    return render_template('work.html')
+
 @app.route('/api/add_comment', methods=['POST'])
 def add_comment():
     try:
