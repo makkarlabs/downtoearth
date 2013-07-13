@@ -185,3 +185,17 @@ def list_comments():
             dat['can_vote'] = True
         data.append(dat)
     return jsonify(data=data)
+
+def list_restaurants_select():
+    data=[]
+    for store in Store.query.all():
+        dat = store.id, store.store_name
+        data.append(dat)
+    return data
+
+@app.route('/additem', methods=['GET'])
+def add_item_html():
+    return render_template("additem.html", additem_form = new forms.AddItemForm())
+
+@app.route('/add_item', methods=['POST'])
+def add_item():
