@@ -1,7 +1,6 @@
 from downtoearth import db, app
 from flask.ext.security import Security, SQLAlchemyUserDatastore, \
      UserMixin, RoleMixin
-from downtoearth.forms import ExtendedRegisterForm
 import json
 from flask.ext.social import Social
 from flask.ext.social.datastore import SQLAlchemyConnectionDatastore
@@ -89,3 +88,10 @@ user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 social = Social(app, SQLAlchemyConnectionDatastore(db, Connection))
 
+
+def list_restaurants_select():
+    data=[]
+    for store in Store.query.all():
+        dat = store.id, store.store_name
+        data.append(dat)
+    return data

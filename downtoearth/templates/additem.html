@@ -9,19 +9,18 @@
 
 {% block body %}
     <div id="additem" class="container-fluid">
-        <form class="" id="add-item" action="/add_item" method="POST">
+        <form class="" id="add-item" action="/additem" method="POST">
         {{ additem_form.hidden_tag() }}
 
-        {{ additem_form.store_name() }}
+        <div>Store Name {{ additem_form.store_name() }} </div>
 
-        {{ additem_form.item_name() }}
+        <div>Item Name {{ additem_form.item_name() }} </div>
 
-        {{ additem_form.item_url() }}
+        <div>Item URL {{ additem_form.item_url() }} </div>
 
-        {{ additem_form.item_price() }}
+        <div>Item Price {{ additem_form.item_price() }} </div>
 
-        {{ additem_form.submit() }}
-
+        <input type="submit" value = "Submit"/>
         </form>       
     </div>
 
