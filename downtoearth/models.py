@@ -88,3 +88,10 @@ user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 social = Social(app, SQLAlchemyConnectionDatastore(db, Connection))
 
+
+def list_restaurants_select():
+    data=[]
+    for store in Store.query.all():
+        dat = store.id, store.store_name
+        data.append(dat)
+    return data
