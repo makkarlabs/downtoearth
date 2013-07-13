@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container-fluid">
+    <div class="media item">
+        {% for d in data %}
+        <h4 class="media-heading">{{d.name}}</h4>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
