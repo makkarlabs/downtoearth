@@ -183,9 +183,9 @@ def list_comments():
             tdat['cat_name'] = comment.cat_name
             tdat['up_votes'] = comment.up_votes
             tdat['down_vote'] = comment.down_votes
-            tdat['timestamp'] = comment.timestamp
+            #tdat['timestamp'] = comment.timestamp
             tdat['commenter_name'] = comment.commenter_name
-            tdat['item_name'] = Item.query.filter_by(id=cat_id).first().item_name
+            tdat['item_name'] = Item.query.filter_by(id=comment.cat_id).first().item_name
             if len(Vote.query.filter_by(user_id = current_user.id).filter_by(comment_id = comment.id).all()) > 0:
                 tdat['can_vote'] = False
             else:

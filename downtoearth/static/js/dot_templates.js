@@ -22,18 +22,18 @@ var items_list = doT.template("\
 </div>\
 ");
 
-var comments_list = doT.template("\
+/*var comments_list = doT.template("\
 <div id='accordion' class='media'>\
 {{~it.data :value:index}}\
 <h4 class='media-heading'>{{=value.name}}</h4>\
 <div>\
-{{~value.comments :val: index}}\
+{{~value.comments :val:index}}\
 <div class='item'>\
-<h4 class='media-heading'>{{=val.commenter_name}}</h4>\
+<h4>{{=val.commenter_name}}</h4>\
 <p class='media-body'>{{=val.comment}}</p>\
 <span><i class='icon-thumbs-up'></i> {{=val.up_votes}} | <i class='icon-thumbs-down'></i> {{=val.down_votes}}</span>\
-{{~}}\
 </div>\
+{{~}}\
 <div class='enterItem'>\
     <label for='comment'>Comments</label>\
     <textarea id='comment' placeholder='Add Comment' rows='3' cols='20'>\
@@ -41,5 +41,28 @@ var comments_list = doT.template("\
     <button id='commentSubmit' class='btn'>Add Comment</button>\
 </div>\
 </div>\
+</div>\
+");*/
+
+var comments_list = doT.template("\
+<div class='accordion' id='accordion'>\
+{{~it.data :value:index}}\
+<div class='accordion-group'>\
+<div class='accordion-heading'>\
+<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapse{{=index}}'>\
+{{=value.name}}\
+</a>\
+</div>\
+<div id='collapse{{=index}}' class='accordion-body collapse in'>\
+<div class='accordion-inner'>\
+text text text\
+</div>\
+<div class='enterItem'>\
+    <label for='comment'>Comments</label>\
+    <textarea id='comment' placeholder='Add Comment' rows='3' cols='20'></textarea>\
+    <button id='commentSubmit' class='btn'>Add Comment</button>\
+</div>\
+</div>\
+{{~}}\
 </div>\
 ");
