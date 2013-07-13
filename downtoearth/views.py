@@ -4,7 +4,7 @@ from flask.ext.security import login_required, current_user, login_user, LoginFo
 
 #App Imports
 from downtoearth import app, forms, db
-from downtoearth.models import User
+from downtoearth.models import User, Store, Item, Comment, Vote
 import config
 
 #Python Imports
