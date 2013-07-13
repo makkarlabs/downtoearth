@@ -1,11 +1,15 @@
 #Flask Imports
 from flask import Flask, jsonify, flash, render_template, request, redirect, url_for, session, abort
-from flask.ext.security import login_required, current_user, login_user, LoginForm
+from flask.ext.security import login_required, current_user, login_user, LoginForm, RegisterForm
+from flask.ext.social.views import connect_handler
+from flask.ext.social.utils import get_provider_or_404
 
 #App Imports
 from downtoearth import app, forms, db
-from downtoearth.models import User
+from downtoearth.models import User, social, security
+from downtoearth.models import user_datastore as ds
 import config
+import facebook
 
 #Python Imports
 from datetime import datetime, date
@@ -14,6 +18,7 @@ import json
 import time
 
 @app.route('/')
+@login_required
 def index():
     return render_template('index.html')
 
@@ -24,11 +29,6 @@ def profile():
         content='Profile Page',
         facebook_conn=social.facebook.get_connection())
 
-@app.route('/signin')
-def login():
-    if current_user.is_authenticated:
-        return redirect('/profile')
-    
 #You can write 'function decorators' like @login_required as shown below
 #def subscription_required(fn):
 #    @wraps(fn)
@@ -41,6 +41,41 @@ def login():
 
 #def is_subscribed(user):
 #    return User.query.filter_by(id=user.id).first().is_subscribed
+
+@app.route('/adduser', methods=['GET', 'POST'])
+@app.route('/adduser/<provider_id>', methods=['GET', 'POST'])
+def adduser(provider_id=None):
+
+    provider = get_provider_or_404(provider_id)
+
+    form = RegisterForm()
+    print form
+    connection_values = session.get('failed_login_connection', None)
+    print connection_values
+    access_token = connection_values['access_token']
+    graph = facebook.GraphAPI(access_token)
+    profile = graph.get_object("me")
+    email = profile["email"]
+    print email
+
+    #ds = security.user_datastore
+    user = ds.create_user(email=email, password="makkarlabsmass")
+    ds.commit()
+            # See if there was an attempted social login prior to registering
+        # and if so use the provider connect_handler to save a connection
+    connection_values = session.pop('failed_login_connection', None)
+
+    if connection_values:
+        connection_values['user_id'] = user.id
+        connect_handler(connection_values, provider)
+
+    if login_user(user):
+        ds.commit()
+        flash('Account created successfully', 'info')
+        return redirect(url_for('profile'))
+
+
+    return abort(404)
 
 @app.route('/api/add_comment', methods=['POST'])
 def add_comment():
