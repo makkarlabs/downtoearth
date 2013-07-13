@@ -176,7 +176,7 @@ def list_comments():
             tdat['cat_id'] = comment.cat_id
             tdat['cat_name'] = comment.cat_name
             tdat['up_votes'] = comment.up_votes
-            tdat['down_vote'] = comment.down_votes
+            tdat['down_votes'] = comment.down_votes
             #tdat['timestamp'] = comment.timestamp
             tdat['commenter_name'] = comment.commenter_name
             tdat['item_name'] = Item.query.filter_by(id=comment.cat_id).first().item_name

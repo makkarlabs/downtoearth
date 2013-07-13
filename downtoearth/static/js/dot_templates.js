@@ -55,12 +55,18 @@ var comments_list = doT.template("\
 </div>\
 <div id='collapse{{=index}}' class='accordion-body collapse in'>\
 <div class='accordion-inner'>\
-text text text\
+{{~value.comments :val:ind}}\
+<div class='item'>\
+<p>{{=val.comment}}</p>\
+<span><i class='icon-thumbs-up'></i> <em>{{=val.up_votes}}</em> | <i class='icon-thumbs-down'></i> <em>{{=val.down_votes}}</em></span>\
+</div>\
+{{~}}\
 </div>\
 <div class='enterItem'>\
-    <label for='comment'>Comments</label>\
-    <textarea id='comment' placeholder='Add Comment' rows='3' cols='20'></textarea>\
-    <button id='commentSubmit' class='btn'>Add Comment</button>\
+    <label for='comment{{=ind}}'>Comments</label>\
+    <textarea class='comment{{=ind}}' placeholder='Add Comment' rows='3' cols='10'></textarea>\
+    <br>\
+    <button class='btn commentSub{{=ind}}'>Add Comment</button>\
 </div>\
 </div>\
 {{~}}\

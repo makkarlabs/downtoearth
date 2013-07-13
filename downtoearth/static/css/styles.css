@@ -14,12 +14,6 @@
     cursor: pointer;
     background: #eee;
 }
-.enterItem {
-    padding: 10px;
-    margin-right: auto;
-    margin-left: auto;
-    width: 20%;
-}
 .show {
     height: auto;
 }

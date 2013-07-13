@@ -16,8 +16,8 @@
                     $('#items_list').html(comments_list(data));
                     $('#accordion').accordion();
                 });
-                $("#commentSubmit").click(function() {
-                    if($("#comment").val()!="") {
+                $(".commentSubmit").click(function() {
+                    if($(".comment").val()!="") {
                         $.post("/api/addcomment", {'item_id': '{{data.id}}', 'comment': $('#comment').val()}, function() {
                             window.location.href="restaurants/{{data.store_name}}"
                         });
