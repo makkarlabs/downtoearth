@@ -93,6 +93,7 @@ def list_restaurants():
     data=[]
     for store in Store.query.all():
         dat = {}
+        dat['id'] = store.id
         dat['name'] = store.store_name
         dat['photo_url'] = store.store_photo_url
         dat['location'] = store.store_location
@@ -103,9 +104,10 @@ def list_restaurants():
 def list_items():
     try:
         data=[]
-        store_name = request.form['store_name']
-        print store_name
-        for store in Item.query.filter_by(store_name = store_name):
+        store_id = request.form['store_id']
+        print store_id
+        for store in Item.query.filter_by(store_id = int(store_id)):
+            print "found store"
             dat = {}
             dat['name'] = store.item_name
             data.append(dat)
