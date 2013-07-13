@@ -16,15 +16,10 @@
             $.post("/api/list/restaurants", function(data) {
                 var resList = res_list(data);
                 $("#rest_list").html(resList);
-                $("div.enclosure").click(function(data1) {
-                    console.log($(this).attr('data-name'));
-                    $.post( "/api/list/items", {'store_id':  $(this).attr('data-name')}, function(data1) {
-                        console.log(data1);
-                        var resList = items_list(data1);
-                        $("rest_list").html(resList);
-                    });
+                $("div.enclosure").click(function() {
+                    window.location.href = "/restaurants/" + $(this).attr('data-name');
                 });
             });
         });
     </script>
-{% endblock%}  
+{% endblock %}  
