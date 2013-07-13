@@ -9,6 +9,8 @@ from downtoearth import app, forms, db
 from downtoearth.models import User, social, security
 from downtoearth.models import user_datastore as ds
 from downtoearth.models import Store, Item, Comment, Vote
+from downtoearth.forms import AddItemForm
+
 import config
 import facebook
 
@@ -193,9 +195,17 @@ def list_restaurants_select():
         data.append(dat)
     return data
 
-@app.route('/additem', methods=['GET'])
-def add_item_html():
-    return render_template("additem.html", additem_form = new forms.AddItemForm())
-
-@app.route('/add_item', methods=['POST'])
+@app.route('/additem', methods=['GET','POST'])
 def add_item():
+
+    form = AddItemForm(request.form)    
+    if request.method=='POST':
+        item = Item(store_id = form.store_name,
+            item_name = form.item_name,
+            item_photo_url = form.item_url,
+            item_price = form.item_price)
+        db.session.add(item)
+        db.session.commit()
+
+    return render_template("additem.html", additem_form = AddItemForm())
+

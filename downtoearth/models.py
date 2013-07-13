@@ -1,7 +1,6 @@
 from downtoearth import db, app
 from flask.ext.security import Security, SQLAlchemyUserDatastore, \
      UserMixin, RoleMixin
-from downtoearth.forms import ExtendedRegisterForm
 import json
 from flask.ext.social import Social
 from flask.ext.social.datastore import SQLAlchemyConnectionDatastore
