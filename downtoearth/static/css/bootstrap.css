@@ -2282,7 +2282,7 @@ table th[class*="span"],
   *margin-right: .3em;
   line-height: 14px;
   vertical-align: text-top;
-  background-image: url("../img/glyphicons-halflings-white.png");
+  background-image: url("../img/glyphicons-halflings.png");
   background-position: 14px 14px;
   background-repeat: no-repeat;
 }
@@ -4805,11 +4805,11 @@ input[type="submit"].btn.btn-mini {
 
 .navbar-inverse .navbar-inner {
   background-color: #1b1b1b;
-  background-image: -moz-linear-gradient(top, #222222, #111111);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#222222), to(#111111));
-  background-image: -webkit-linear-gradient(top, #222222, #111111);
-  background-image: -o-linear-gradient(top, #222222, #111111);
-  background-image: linear-gradient(to bottom, #222222, #111111);
+  background-image: -moz-linear-gradient(top, #800000, #111111);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#800000), to(#111111));
+  background-image: -webkit-linear-gradient(top, #800000, #111111);
+  background-image: -o-linear-gradient(top, #800000, #111111);
+  background-image: linear-gradient(to bottom, #800000, #111111);
   background-repeat: repeat-x;
   border-color: #252525;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff111111', GradientType=0);
@@ -4888,7 +4888,7 @@ input[type="submit"].btn.btn-mini {
   border-bottom-color: #ffffff;
 }
 
-.navbar-inverse .navbar-search .search-query {
+.navbar-inverse {
   color: #ffffff;
   background-color: #515151;
   border-color: #111111;
@@ -4901,16 +4901,29 @@ input[type="submit"].btn.btn-mini {
           transition: none;
 }
 
+.navbar-search .search-query {
+  color: #000000;
+  background-color: #ffffff;
+  border-color: #111111;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.15);
+     -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.15);
+          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.15);
+  -webkit-transition: none;
+     -moz-transition: none;
+       -o-transition: none;
+          transition: none;
+}
+
 .navbar-inverse .navbar-search .search-query:-moz-placeholder {
-  color: #cccccc;
+  color: #999999;
 }
 
 .navbar-inverse .navbar-search .search-query:-ms-input-placeholder {
-  color: #cccccc;
+  color: #999999;
 }
 
 .navbar-inverse .navbar-search .search-query::-webkit-input-placeholder {
-  color: #cccccc;
+  color: #999999;
 }
 
 .navbar-inverse .navbar-search .search-query:focus,
