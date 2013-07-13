@@ -28,6 +28,36 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary=roles_users,
     backref=db.backref('users', lazy='dynamic'))
 
+class store(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    store_name = db.Column(db.String(255), unique=True)
+    store_url = db.Column(db.String(255))
+    store_address = db.Column(db.String(1024))
+    store_photo_url = db.Column(db.String(255))
+    store_online = db_Column(db.Boolean())
+
+class item(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    store_id = db.Column(db.Integer, )#TODO foreign key)
+    item_name = db.Column(db.String(255))
+    item_image_url = db.Column(db.String(255))
+    item_price = db.Column(db.Numeric(20,3))
+
+class comments(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    item_id = db.Column(db.Integer, )#TODO foreign key)
+    comment = db.Column(db.String(2048))
+    up_votes = db.Column(db.Integer)
+    down_votes = db.Column(db.Integer)
+    timestamp = db.Column(db.DateTime())
+
+class votes(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    item_id = db.Column(db.Integer)
+    comment_id = db.Column(db.Integer)
+    isup = db.Column(db.Boolean())
+    timestamp = db.Column(db.DateTime())
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
