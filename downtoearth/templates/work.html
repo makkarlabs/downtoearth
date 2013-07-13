@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}GrapeVine{% endblock %}
+
+{% block includes %}
+    <script src="{{url_for('static',filename = 'js/doT.min.js')}}"></script>
+    <script src="{{url_for('static',filename = 'js/dot_templates.js')}}"></script>
+    <script src="{{url_for('static',filename = 'js/holder.js')}}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="rest_list" class="container-fluid">
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function(data) {
+            $.post("/api/list/restaurants", function(data) {
+                var resList = res_list(data);
+                $("#rest_list").html(resList);
+                $("div.item").click(function() {
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/list/items",
+                        data: "{'store_name': '" + data.data.name + "'}",
+                        success: function(data1) {
+                            var resList = items_list(data1);
+                            $("rest_list").html(resList);
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock%}  
