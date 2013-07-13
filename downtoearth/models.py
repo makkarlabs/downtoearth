@@ -64,12 +64,16 @@ class Comment(db.Model):
     up_votes = db.Column(db.Integer)
     down_votes = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime())
-    def __init__(self,cat_name, comment, cat_id):
+    commenter_id = db.Column(db.Integer)
+    commenter_name = db.Column(db.String(255))
+    def __init__(self,cat_name, comment, cat_id, commenter_id):
         self.cat_id = cat_id
         self.comment = comment
         self.up_votes = 0
         self.down_votes = 0
         self.timestamp = datetime.now()
+        self.commenter_id = commenter_id
+        self.commenter_name = Connection.query.filter_by(user_id = commenter_id).first().display_name
 
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)

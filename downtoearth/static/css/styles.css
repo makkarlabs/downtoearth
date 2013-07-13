@@ -14,3 +14,20 @@
     cursor: pointer;
     background: #eee;
 }
+.enterItem {
+    padding: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 20%;
+}
+.show {
+    height: auto;
+}
+.hide {
+    height: 10%;
+    transition: height 0.3s linear;
+    -moz-transition: height 0.3s linear;
+    -webkit-transition: height 0.3s linear;
+    -ms-transition: height 0.3s linear;
+    -o-transition: height 0.3s linear;
+}

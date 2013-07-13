@@ -1,11 +1,30 @@
 {% extends "layout.html" %}
+{% block includes %}
+    <script src="{{url_for('static',filename = 'js/doT.min.js')}}"></script>
+    <script src="{{url_for('static',filename = 'js/dot_templates.js')}}"></script>
+    <script src="{{url_for('static',filename = 'js/holder.js')}}"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+{% endblock %}
 {% block body %}
 <div class="container-fluid">
-    <div class="media item">
-        {% for d in data %}
-        <h4 class="media-heading">{{d.name}}</h4>
-        {% endfor %}
+    <div id="items_list">
     </div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $.post('/api/list/comments', {'store_name': "{{data.store_name}}" },function(data) {
+                    console.log(data);
+                    $('#items_list').html(comments_list(data));
+                    $('#accordion').accordion();
+                });
+                $("#commentSubmit").click(function() {
+                    if($("#comment").val()!="") {
+                        $.post("/api/addcomment", {'item_id': '{{data.id}}', 'comment': $('#comment').val()}, function() {
+                            window.location.href="restaurants/{{data.store_name}}"
+                        });
+                    }
+                });
+            });
+        </script>
 </div>
 
 {% endblock %}
