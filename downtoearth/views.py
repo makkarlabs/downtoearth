@@ -1,10 +1,10 @@
 #Flask Imports
 from flask import Flask, jsonify, flash, render_template, request, redirect, url_for, session, abort
-from flask.ext.security import login_required, current_user, login_user
+from flask.ext.security import login_required, current_user, login_user, LoginForm
 
 #App Imports
-from flask_app import app, forms, db
-from flask_app.models import User
+from downtoearth import app, forms, db
+from downtoearth.models import User
 import config
 
 #Python Imports
@@ -14,10 +14,21 @@ import json
 import time
 
 @app.route('/')
-@login_required
 def index():
     return render_template('index.html')
 
+@app.route('/profile')
+def profile():
+    return render_template(
+        'profile.html',
+        content='Profile Page',
+        facebook_conn=social.facebook.get_connection())
+
+@app.route('/signin')
+def login():
+    if current_user.is_authenticated:
+        return redirect('/profile')
+    
 #You can write 'function decorators' like @login_required as shown below
 #def subscription_required(fn):
 #    @wraps(fn)

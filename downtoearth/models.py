@@ -1,7 +1,7 @@
-from flask_app import db, app
+from downtoearth import db, app
 from flask.ext.security import Security, SQLAlchemyUserDatastore, \
      UserMixin, RoleMixin
-from flask_app.forms import ExtendedRegisterForm
+from downtoearth.forms import ExtendedRegisterForm
 import json
 from flask.ext.social import Social
 from flask.ext.social.datastore import SQLAlchemyConnectionDatastore
@@ -29,6 +29,8 @@ class User(db.Model, UserMixin):
     confirmed_at = db.Column(db.DateTime())
     roles = db.relationship('Role', secondary=roles_users,
     backref=db.backref('users', lazy='dynamic'))
+    connections = db.relationship('Connection',
+                backref=db.backref('user', lazy='joined'), cascade="all")
 
 class Connection(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -48,7 +50,7 @@ class store(db.Model):
     store_url = db.Column(db.String(255))
     store_address = db.Column(db.String(1024))
     store_photo_url = db.Column(db.String(255))
-    store_online = db_Column(db.Boolean())
+    store_online = db.Column(db.Boolean())
 
 class item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -75,6 +77,7 @@ class votes(db.Model):
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore, confirm_register_form=ExtendedRegisterForm)
+security = Security(app, user_datastore)
+print "social created"
 social = Social(app, SQLAlchemyConnectionDatastore(db, Connection))
 
