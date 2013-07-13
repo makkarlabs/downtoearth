@@ -77,12 +77,24 @@ def adduser(provider_id=None):
         flash('Account created successfully', 'info')
         return redirect(url_for('profile'))
 
-
     return abort(404)
 
 @app.route('/restaurants')
 def restaurants():
     return render_template('work.html')
+
+@app.route('/restaurants/<restaurant_name>')
+def restaurants_page(restaurant_name = None):
+    if restaurant_name not None:
+        data=[]
+        store_id = Store.query.filter_by(store_name = restaurant_name).first().store_id
+        for store in Item.query.filter_by(store_id = int(store_id)):
+            print "found store"
+            dat = {}
+            dat['name'] = store.item_name
+            data.append(dat)       
+        return render_template('todo.html', data = data)
+
 
 @app.route('/api/add_comment', methods=['POST'])
 def add_comment():
