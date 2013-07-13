@@ -13,6 +13,8 @@ import calendar
 import json
 import time
 
+categories = ["Items", "Service", "Rates"]
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -44,9 +46,13 @@ def login():
 
 @app.route('/api/add_comment', methods=['POST'])
 def add_comment():
-    comment = Comment(request.form['item_id'], request.form['comment'])
-    db.session.add(comment)
-    db.session.commit()
+    try:
+        comment = Comment(request.form['item_id'], request.form['comment'])
+        db.session.add(comment)
+        db.session.commit()
+    except:
+        raise KeyError
+        abort(403)
 
 @app.route('/api/up_vote', methods=['POST'])
 def up_vote():
@@ -77,3 +83,46 @@ def can_vote():
         return jsonify(data={"can_vote":False})
     else:
         return jsonify(data={"can_vote":True})    
+
+@app.route('/api/list/restaurants', methods=['POST'])
+def list_restaurants():
+    data=[]
+    for store in Store.query.all():
+        dat = {}
+        dat['name'] = store.store_name
+        dat['photo_url'] = store.store_photo_url
+        dat['location'] = store.store_location
+        data.append(dat)
+    return jsonify(data=data)
+
+@app.route('/api/list/items', methods=['POST'])
+def list_items():
+    data=[]
+    for store in Item.query.all():
+        dat = {}
+        dat['name'] = store.item_name
+        data.append(dat)
+    return jsonify(data=data)
+
+@app.route('/api/list/comments', methods=['POST'])
+def list_comments():
+    try:
+        cat_id = request.form['cat_id']
+    except:
+        raise KeyError
+        abort(404)
+    data=[]
+    for comment in Comments.query.filter_by(cat_id = cat_id).all():
+        dat = {}
+        dat['comment'] = comment.comment
+        dat['cat_id'] = comment.cat_id
+        dat['cat_name'] = comment.cat_name
+        dat['up_votes'] = comment.up_votes
+        dat['down_vote'] = comment.down_votes
+        dat['timestamp'] = comment.timestamp
+        if len(Vote.query.filter_by(user_id = current_user.id).filter_by(comment_id = comment.id).all()) > 0:
+            dat['can_vote'] = False
+        else:
+            dat['can_vote'] = True
+        data.append(dat)
+    return jsonify(data=data)
