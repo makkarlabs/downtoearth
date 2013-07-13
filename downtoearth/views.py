@@ -104,6 +104,7 @@ def list_items():
     try:
         data=[]
         store_name = request.form['store_name']
+        print store_name
         for store in Item.query.filter_by(store_name = store_name):
             dat = {}
             dat['name'] = store.item_name
