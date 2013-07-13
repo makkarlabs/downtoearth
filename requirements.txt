@@ -5,3 +5,4 @@ MySQL-python
 flask-bcrypt
 flask-sqlalchemy
 flask-social
+http://github.com/pythonforfacebook/facebook-sdk/tarball/master
