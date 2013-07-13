@@ -68,7 +68,7 @@ class Comment(db.Model):
     up_votes = db.Column(db.Integer)
     down_votes = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime())
-    def __init__(self,cat_name, comment, cat_id = 0):
+    def __init__(self,cat_name, comment, cat_id):
         self.cat_id = cat_id
         self.comment = comment
         self.up_votes = 0
