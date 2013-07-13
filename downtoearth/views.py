@@ -167,13 +167,13 @@ def list_items():
 
 @app.route('/api/list/comments', methods=['POST'])
 def list_comments():
-    try:
+    """try:
         cat_id = request.form['cat_id']
     except:
         raise KeyError
-        abort(404)
+        abort(404)"""
     data=[]
-    for comment in Comments.query.filter_by(cat_id = cat_id).all():
+    for comment in Comments.query.all():
         dat = {}
         dat['comment'] = comment.comment
         dat['cat_id'] = comment.cat_id
@@ -190,7 +190,6 @@ def list_comments():
 
 @app.route('/additem', methods=['GET','POST'])
 def add_item():
-
     form = AddItemForm(request.form)    
     if request.method=='POST':
         d = form.data
