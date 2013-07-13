@@ -12,6 +12,11 @@ filehandler.setLevel(logging.INFO)
 app.logger.addHandler(filehandler)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + config.DB_USERNAME + ':' + config.DB_PASSWORD + '@' + config.DB_SERVER + '/' + config.DB_NAME
 
+app.config['SOCIAL_FACEBOOK'] = {
+    'consumer_key': config.CONSUMER_KEY,
+    'consumer_secret': config.CONSUMER_SECRET
+}
+
 db = SQLAlchemy(app)
 mail = Mail(app)
 
