@@ -19,6 +19,7 @@ from datetime import datetime, date
 import calendar
 import json
 import time
+import urllib2
 
 categories = ["Items", "Service", "Rates"]
 
@@ -26,13 +27,6 @@ categories = ["Items", "Service", "Rates"]
 @login_required
 def index():
     return render_template('index.html')
-
-@app.route('/profile')
-def profile():
-    return render_template(
-        'profile.html',
-        content='Profile Page',
-        facebook_conn=social.facebook.get_connection())
 
 #You can write 'function decorators' like @login_required as shown below
 #def subscription_required(fn):
@@ -209,3 +203,15 @@ def add_item():
 
     return render_template("additem.html", additem_form = AddItemForm())
 
+@app.route('/rating', methods=['GET','POST'])
+def ratings_api():
+    name = request.args.get('name', '')
+    place = request.args.get('place', '')
+    response = urllib2.urlopen("http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20local.search%20where%20query%3D'"+name+"'%20and%20location%3D%22"+place+"%22%20and%20minimum_rating%3D3&format=json")
+    jsonres = response.read()
+    #print jsonres
+    data = json.loads(jsonres)
+    try:
+        return data["query"]["results"]["Result"][0]["Rating"]["AverageRating"]
+    except:
+        return "0"
