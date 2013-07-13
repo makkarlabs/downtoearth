@@ -188,13 +188,6 @@ def list_comments():
         data.append(dat)
     return jsonify(data=data)
 
-def list_restaurants_select():
-    data=[]
-    for store in Store.query.all():
-        dat = store.id, store.store_name
-        data.append(dat)
-    return data
-
 @app.route('/additem', methods=['GET','POST'])
 def add_item():
 
