@@ -15,11 +15,22 @@
                     console.log(data);
                     $('#items_list').html(comments_list(data));
                     $('#accordion').accordion();
+                    $('a.thumbs').click(function() {
+                        if($(this).attr('data-ud') == 'up') {
+                            $.post('/api/up_vote', {'item_id': $(this).attr('data-item-id'), 'comment_id': $(this).attr('data-c-id')}, function(data1) {
+                                window.location.href = "/restaurants/{{data.store_name}}"
+                            });
+                        } else {
+                            $.post('/api/down_vote', {'item_id': $(this).attr('data-item-id'), 'comment_id': $(this).attr('data-c-id')}, function(data1) {
+                                window.location.href = "/restaurants/{{data.store_name}}"
+                            });
+                        }
+                    });
                 });
                 $(".commentSubmit").click(function() {
                     if($(".comment").val()!="") {
                         $.post("/api/addcomment", {'item_id': '{{data.id}}', 'comment': $('#comment').val()}, function() {
-                            window.location.href="restaurants/{{data.store_name}}"
+                            window.location.href = "restaurants/{{data.store_name}}"
                         });
                     }
                 });

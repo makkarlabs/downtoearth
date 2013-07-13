@@ -100,7 +100,10 @@ def add_comment():
 def up_vote():
     try:
         vote = Vote(current_user.id, request.form['item_id'], request.form['comment_id'], True)
+        comment = Comment.query.filter_by(id=request.form['comment_id']).first()
+        comment.up_votes += 1
         db.session.add(vote)
+        db.session.add(comment)
         db.session.commit()
     except:
         print "Database error"
@@ -111,7 +114,10 @@ def up_vote():
 def down_vote():
     try:
         vote = Vote(current_user.id, request.form['item_id'], request.form['comment_id'], False)
+        comment = Comment.query.filter_by(id=request.form['comment_id']).first()
+        comment.down_votes += 1
         db.session.add(vote)
+        db.session.add(comment)
         db.session.commit()
     except:
         print "Database error"
@@ -177,6 +183,7 @@ def list_comments():
             tdat['cat_name'] = comment.cat_name
             tdat['up_votes'] = comment.up_votes
             tdat['down_votes'] = comment.down_votes
+            tdat['c_id'] = comment.id
             #tdat['timestamp'] = comment.timestamp
             tdat['commenter_name'] = comment.commenter_name
             tdat['item_name'] = Item.query.filter_by(id=comment.cat_id).first().item_name

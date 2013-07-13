@@ -78,14 +78,14 @@ class Comment(db.Model):
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer)
+    item_id = db.Column(db.Integer)
     comment_id = db.Column(db.Integer)
     isup = db.Column(db.Boolean())
-    timestamp = db.Column(db.DateTime())
-    def __init__(self, user_id, comment_id, isup):
+    def __init__(self, user_id, item_id, comment_id, isup):
         self.user_id = user_id
         self.comment_id = comment_id
+        self.item_id = item_id
         self.isup = isup
-        timestamp = datetime.now()
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
