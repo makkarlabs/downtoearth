@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}Login{% endblock %}
+{% block signin_active %}active{% endblock %}
+{% block show_signup %}inline-block{% endblock %}
+{% block show_signin %}inline-block{% endblock %}
+
+{% block includes %}
+    <script src="{{url_for('static', filename='js/lib/parsley.js')}}"></script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        {% macro social_login(provider_id, display_name) %}
+          <form action="{{ url_for('social.login', provider_id=provider_id) }}" method="POST">
+              <input type="submit" value="Login with {{ display_name }}" />
+          </form>
+        {% endmacro %}
+
+        {{ social_login('facebook', 'Facebook' )}}
+    </div>
+
+
+{% endblock%}  
