@@ -85,9 +85,9 @@ def restaurants():
 
 @app.route('/restaurants/<restaurant_name>')
 def restaurants_page(restaurant_name = None):
-    if restaurant_name not None:
+    if restaurant_name is not None:
         data=[]
-        store_id = Store.query.filter_by(store_name = restaurant_name).first().store_id
+        store_id = Store.query.filter_by(store_name = restaurant_name).first().id
         for store in Item.query.filter_by(store_id = int(store_id)):
             print "found store"
             dat = {}

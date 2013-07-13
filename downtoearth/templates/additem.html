@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}GrapeVine{% endblock %}
+
+{% block includes %}
+    <script src="{{url_for('static',filename = 'js/doT.min.js')}}"></script>
+    <script src="{{url_for('static',filename = 'js/dot_templates.js')}}"></script>
+    <script src="{{url_for('static',filename = 'js/holder.js')}}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="additem" class="container-fluid">
+        <form class="" id="add-item" action="/add_item" method="POST">
+        {{ additem_form.hidden_tag() }}
+
+        {{ additem_form.store_name() }}
+
+        {{ additem_form.item_name() }}
+
+        {{ additem_form.item_url() }}
+
+        {{ additem_form.item_price() }}
+
+        {{ additem_form.submit() }}
+
+        </form>       
+    </div>
+
+{% endblock%}  

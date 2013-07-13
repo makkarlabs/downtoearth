@@ -2,11 +2,11 @@ from flask.ext.wtf import Form, TextField, TextAreaField, SelectField, DecimalFi
 from flask_security.forms import RegisterForm, LoginForm
 from flask.ext.wtf import Required, Regexp, Length, Email, URL, EqualTo, NumberRange, Recaptcha
 from downtoearth import config
+from downtoearth.views import list_restaurants_select
 
-class ExtendedRegisterForm(RegisterForm):
-    first_name = TextField('First Name', [Required()])
-    last_name = TextField('Last Name', [Required()])
-    organization = TextField('Organisation', [Required()])
-    recaptcha = RecaptchaField([Recaptcha()])
-
+class AddItemForm(Form):
+    store_name = SelectField(choices=list_restaurants_select()]
+    item_name = TextField()
+    item_url = TextField()
+    item_price = DecimalField()
 
