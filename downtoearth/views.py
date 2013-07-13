@@ -200,10 +200,11 @@ def add_item():
 
     form = AddItemForm(request.form)    
     if request.method=='POST':
-        item = Item(store_id = form.store_name,
-            item_name = form.item_name,
-            item_photo_url = form.item_url,
-            item_price = form.item_price)
+        d = form.data
+        item = Item(store_id = d['store_name'],
+            item_name = d['item_name'],
+            item_photo_url = d['item_url'],
+            item_price = d['item_price'])
         db.session.add(item)
         db.session.commit()
 
