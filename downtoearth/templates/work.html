@@ -18,7 +18,7 @@
                 $("#rest_list").html(resList);
                 $("div.enclosure").click(function(data1) {
                     console.log($(this).attr('data-name'));
-                    $.post( "/api/list/menu", "{'store_name': '" + $(this).attr('data-name') + "'}", function() {
+                    $.post( "/api/list/items", "{'store_name': '" + $(this).attr('data-name') + "'}", function() {
                         var resList = items_list(data1);
                         $("rest_list").html(resList);
                     });
