@@ -1,0 +1,62 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %} {% endblock %} | Makkar Labs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- favicon -->
+    <!--<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">-->
+    <!-- CSS -->
+    <link href="{{url_for('static',filename = 'bootstrap/css/bootstrap.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static',filename = 'bootstrap/css/bootstrap-responsive.css')}}">
+    <link href="{{url_for('static',filename = 'css/styles.css')}}" rel="stylesheet">
+    <script type="text/javascript" src="{{url_for('static', filename='js/lib/jquery.min.js')}}"></script>
+    {% block includes %} {% endblock %}
+</head>
+<body>
+ 
+<div class="container" id="nav">
+    <div class="row-fluid">
+    <a id="home" class="brand" href="/" title="Makkar Labs">
+        <!--<img src="{{url_for('static', filename='img/logo.png')}}" class="logo" />-->
+        Makkar Labs
+    </a>
+    <div id="navbar">
+        {% if not current_user.id or current_user.id=="" %}
+        <a id="signin" class="minor {% block signin_active %}inactive{% endblock %}" href="{{url_for_security('login')}}" title="Sign In">
+             Sign In |
+        </a>    
+        <a id="register" class="minor {% block signup_active %}inactive{% endblock %}" href="{{url_for_security('register')}}" title="Register">
+            Register
+        </a> 
+        {% endif %}
+        {% if current_user.id and current_user.id > 0 %}
+        <a class="minor {% block signout_active %}inactive{% endblock %}" href="{{url_for_security('logout')}}" title="Sign Out">
+             Sign Out
+        </a>
+        {% endif %}
+    </div>
+    </div>
+</div>
+<div id="body">
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                {% block body %} {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+   
+<footer class="container">
+    <hr>
+    <p class="foot-big"> Makkar Labs 2013</p>
+</footer>
+<script>
+//Insert Google Analytics Code here
+</script>
+
+</body>
+</html>
