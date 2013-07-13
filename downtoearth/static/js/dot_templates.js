@@ -1,7 +1,7 @@
 var res_list = doT.template("\
 <div class='media item'>\
     {{~it.data :value: index}}\
-    <div class='enclosure' data-name='{{=value.name}}'>\
+    <div class='enclosure' data-name='{{=value.id}}'>\
     <a class='pull-left' href='#'><img src='{{=value.photo_url}}' class='media-object resize' data-src='holder.js/64x64'/></a>\
     <div class='media-body'>\
         <h4 id='resName + ' class='media-heading'>{{=value.name}}</h4>\
