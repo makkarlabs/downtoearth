@@ -1,0 +1,16 @@
+.trans {
+  background: transparent !important;
+}
+
+.resize {
+    max-width: 64px;
+    max-height: 64px;
+}
+.item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.item:hover {
+    cursor: pointer;
+    background: #eee;
+}

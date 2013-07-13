@@ -46,25 +46,27 @@ class Store(db.Model):
     store_name = db.Column(db.String(255), unique=True)
     store_url = db.Column(db.String(255))
     store_address = db.Column(db.String(1024))
+    store_location = db.Column(db.String(255), default="All")
     store_photo_url = db.Column(db.String(255))
     store_online = db.Column(db.Boolean())
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    store_id = db.Column(db.Integer, )#TODO foreign key)
+    store_id = db.Column(db.Integer)
     item_name = db.Column(db.String(255))
-    item_image_url = db.Column(db.String(255))
+    item_photo_url = db.Column(db.String(255))
     item_price = db.Column(db.Numeric(20,3))
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    item_id = db.Column(db.Integer, )#TODO foreign key)
+    cat_name = db.Column(db.String(255))
+    cat_id = db.Column(db.Integer)
     comment = db.Column(db.String(2048))
     up_votes = db.Column(db.Integer)
     down_votes = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime())
-    def __init__(self, item_id, comment):
-        self.item_id = item_id
+    def __init__(self,cat_name, comment, cat_id):
+        self.cat_id = cat_id
         self.comment = comment
         self.up_votes = 0
         self.down_votes = 0
@@ -85,6 +87,5 @@ class Vote(db.Model):
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
-print "social created"
 social = Social(app, SQLAlchemyConnectionDatastore(db, Connection))
 

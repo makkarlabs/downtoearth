@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+
+  "name": "GrapeVine",
+  "description": "A tool to helps to see right through ads.",
+  "version": "1.0",
+
+  "permissions": ["tabs", "*://*.google.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["*://*.google.com/*"],
+      "js": ["lib/jquery-1.9.1.js", "lib/jquery.pnotify.min.js", "site_handlers/common.js", "site_handlers/dominos_co_in.js"],
+      "css": ["lib/css/jquery.pnotify.default.css","lib/css/bootstrap.min.css"]
+    }
+  ]
+}
