@@ -97,12 +97,16 @@ def list_restaurants():
 
 @app.route('/api/list/items', methods=['POST'])
 def list_items():
-    data=[]
-    for store in Item.query.all():
-        dat = {}
-        dat['name'] = store.item_name
-        data.append(dat)
-    return jsonify(data=data)
+    try:
+        data=[]
+        store_name = request.form['store_name']
+        for store in Item.query.filter_by(store_name = store_name):
+            dat = {}
+            dat['name'] = store.item_name
+            data.append(dat)
+        return jsonify(data=data)
+    except KeyError:
+        return abort(404)
 
 @app.route('/api/list/comments', methods=['POST'])
 def list_comments():
