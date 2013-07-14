@@ -36,7 +36,8 @@ var comments_list = doT.template("\
 {{~value.comments :val:ind}}\
 <div class='itemCom'>\
 <p>{{=val.comment}}</p>\
-<span><a class='thumbs' href='#' title='Vote For this answer' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-can-vote={{=val.can_vote}} data-ud='up'><i class='icon-thumbs-up thumbs'></i> <em>{{=val.up_votes}}</em></a> | <a href='#' class='thumbs' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-ud='down' title='Vote Against this answer' data-can-vote={{=val.can_vote}}><i class='icon-thumbs-down'></i> <em>{{=val.down_votes}}</em></a></span>\
+<span><a class='thumbs' href='#' title='Vote For this answer' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-can-vote={{=val.can_vote}} data-ud='up'><i class='icon-thumbs-up thumbs'></i> <em id='voteup{{=val.c_id}}'>{{=val.up_votes}}</em></a> \
+| <a href='#' class='thumbs' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-ud='down' title='Vote Against this answer' data-can-vote={{=val.can_vote}}><i class='icon-thumbs-down'></i> <em id='votedown{{=val.c_id}}'>{{=val.down_votes}}</em></a></span>\
 </div>\
 {{~}}\
 </div>\

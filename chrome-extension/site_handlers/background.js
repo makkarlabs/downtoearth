@@ -14,6 +14,14 @@ if (request.site_url === "dominos_co_in") {
     injected_ids_map[sender.tab.id] = "dominos_co_in";
   sendResponse({farewell: "good"});
 }
+
+else if (request.site_url === "mcdonaldsindia_com") {
+    console.log("hello");
+    chrome.browserAction.setPopup({"popup":"site_handlers/mcdonaldsindia_com.html"});
+    injected_ids.push(sender.tab.id);
+    injected_ids_map[sender.tab.id] = "mcdonaldsindia_com";
+  sendResponse({farewell: "good"});
+}
 else {
     chrome.browserAction.setPopup({"popup":"site_handlers/common.html"});
   sendResponse({farewell: "bye"});
