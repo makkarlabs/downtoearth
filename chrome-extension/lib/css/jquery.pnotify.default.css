@@ -14,7 +14,7 @@ right: 25px;
 position: absolute;
 height: auto;
 /* Ensures notices are above everything */
-z-index: 9999;
+z-index: 99999;
 }
 /* Hides position: fixed from IE6 */
 html > body .ui-pnotify {

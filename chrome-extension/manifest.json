@@ -23,13 +23,23 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.google.com/*"],
+      "matches": ["*://*.dominos.co.in/*"],
 
         "browser_action": {
 		"default_popup": "site_handlers/dominos_co_in.html",
 		"default_icon": "icon-grid.png"
 	  },
       "js": ["lib/jquery-1.9.1.js", "lib/jquery.pnotify.min.js", "site_handlers/common.js", "site_handlers/dominos_co_in.js"],
+      "css": ["lib/css/jquery.pnotify.default.css","lib/css/bootstrap.min.css"]
+    },
+    {
+      "matches": ["*://*.mcdonaldsindia.com/*"],
+
+        "browser_action": {
+    "default_popup": "site_handlers/mcdonaldsindia_com.html",
+    "default_icon": "icon-grid.png"
+    },
+      "js": ["lib/jquery-1.9.1.js", "lib/jquery.pnotify.min.js", "site_handlers/common.js", "site_handlers/mcdonaldsindia_com.js"],
       "css": ["lib/css/jquery.pnotify.default.css","lib/css/bootstrap.min.css"]
     }
   ]

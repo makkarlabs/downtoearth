@@ -87,6 +87,7 @@ def restaurants_page(restaurant_name = None):
 
 
 @app.route('/api/add_comment', methods=['POST'])
+@login_required
 def add_comment():
     #try:
     comment = Comment("Items", request.form['comment'], request.form['item_id'], current_user.id)
@@ -98,34 +99,45 @@ def add_comment():
     return jsonify(data={"success":1, "message":"Commented"})
 
 @app.route('/api/up_vote', methods=['POST'])
+@login_required
 def up_vote():
     try:
-        vote = Vote(current_user.id, request.form['item_id'], request.form['comment_id'], True)
-        comment = Comment.query.filter_by(id=request.form['comment_id']).first()
-        comment.up_votes += 1
-        db.session.add(vote)
-        db.session.add(comment)
-        db.session.commit()
+        print "hello"
+        print Vote.query.filter_by(user_id=current_user.id, item_id = request.form['item_id'], comment_id=request.form['comment_id']).first() is None
+        if Vote.query.filter_by(user_id=current_user.id, item_id = request.form['item_id'], comment_id=request.form['comment_id']).first() is not None:
+            return jsonify({"success":0, "error":"Database Error"})
+        else:
+            vote = Vote(current_user.id, request.form['item_id'], request.form['comment_id'], True)
+            comment = Comment.query.filter_by(id=request.form['comment_id']).first()
+            comment.up_votes += 1
+            db.session.add(vote)
+            db.session.add(comment)
+            db.session.commit()
+            return jsonify({"success":1, "message":"Comment Up Voted", "id":request.form['comment_id']})        
     except:
         print "Database error"
-        return jsonify(data={"success":0, "error":"Database Error"})
-    return jsonify(data={"success":1, "message":"Comment Up Voted"})
+        return jsonify({"success":0, "error":"Database Error"})
 
 @app.route('/api/down_vote', methods=['POST'])
+@login_required 
 def down_vote():
     try:
-        vote = Vote(current_user.id, request.form['item_id'], request.form['comment_id'], False)
-        comment = Comment.query.filter_by(id=request.form['comment_id']).first()
-        comment.down_votes += 1
-        db.session.add(vote)
-        db.session.add(comment)
-        db.session.commit()
+        if Vote.query.filter_by(user_id=current_user.id, item_id = request.form['item_id'], comment_id=request.form['comment_id']).first() is not None:
+            return jsonify({"success":0, "error":"Database Error"})
+        else:
+            vote = Vote(current_user.id, request.form['item_id'], request.form['comment_id'], False)
+            comment = Comment.query.filter_by(id=request.form['comment_id']).first()
+            comment.down_votes += 1
+            db.session.add(vote)
+            db.session.add(comment)
+            db.session.commit()
+            return jsonify({"success":1, "message":"Comment Down Voted", "id":request.form['comment_id']})
     except:
         print "Database error"
-        return jsonify(data={"success":0, "error":"Database Error"})
-    return jsonify(data={"success":1, "message":"Comment Down Voted"})
+        return jsonify({"success":0, "error":"Database Error"})
 
 @app.route('/api/can_vote', methods=['POST'])
+@login_required
 def can_vote():
     comment = Comment.query.filter_by(user_id = current_user.id).filter_by(comment_id = request.form['comment_id']).all()
     if len(comment) > 0:
@@ -196,6 +208,7 @@ def list_comments():
         dat['comments'] = tdata
         data.append(dat)
     return jsonify(data=data)
+
 @app.route('/api/url', methods=['POST'])
 def geturl():
     tdata=[]
@@ -215,7 +228,9 @@ def geturl():
         else:
             tdat['can_vote'] = True
         tdata.append(tdat)
+
 @app.route('/additem', methods=['GET','POST'])
+@login_required
 def add_item():
     form = AddItemForm(request.form)    
     if request.method=='POST':
