@@ -3,7 +3,6 @@
     <script src="{{url_for('static',filename = 'js/doT.min.js')}}"></script>
     <script src="{{url_for('static',filename = 'js/dot_templates.js')}}"></script>
     <script src="{{url_for('static',filename = 'js/holder.js')}}"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 {% endblock %}
 {% block body %}
 <div class="container-fluid">
@@ -14,16 +13,17 @@
                 $.post('/api/list/comments', {'store_name': "{{data.store_name}}" },function(data) {
                     console.log(data);
                     $('#items_list').html(comments_list(data));
-                    $('#accordion').accordion();
                     $('a.thumbs').click(function() {
-                        if($(this).attr('data-ud') == 'up') {
-                            $.post('/api/up_vote', {'item_id': $(this).attr('data-item-id'), 'comment_id': $(this).attr('data-c-id')}, function(data1) {
-                                window.location.href = "/restaurants/{{data.store_name}}";
-                            });
-                        } else {
-                            $.post('/api/down_vote', {'item_id': $(this).attr('data-item-id'), 'comment_id': $(this).attr('data-c-id')}, function(data1) {
-                                window.location.href = "/restaurants/{{data.store_name}}";
-                            });
+                        if($(this).attr('data-can-vote') == 'true') {
+                            if($(this).attr('data-ud') == 'up') {
+                                $.post('/api/up_vote', {'item_id': $(this).attr('data-item-id'), 'comment_id': $(this).attr('data-c-id')}, function(data1) {
+                                    window.location.href = "/restaurants/{{data.store_name}}";
+                                });
+                            } else {
+                                $.post('/api/down_vote', {'item_id': $(this).attr('data-item-id'), 'comment_id': $(this).attr('data-c-id')}, function(data1) {
+                                    window.location.href = "/restaurants/{{data.store_name}}";
+                                });
+                            }
                         }
                     });
                     $(".commentSub").click(function() {

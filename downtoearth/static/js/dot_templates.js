@@ -22,28 +22,6 @@ var items_list = doT.template("\
 </div>\
 ");
 
-/*var comments_list = doT.template("\
-<div id='accordion' class='media'>\
-{{~it.data :value:index}}\
-<h4 class='media-heading'>{{=value.name}}</h4>\
-<div>\
-{{~value.comments :val:index}}\
-<div class='item'>\
-<h4>{{=val.commenter_name}}</h4>\
-<p class='media-body'>{{=val.comment}}</p>\
-<span><i class='icon-thumbs-up'></i> {{=val.up_votes}} | <i class='icon-thumbs-down'></i> {{=val.down_votes}}</span>\
-</div>\
-{{~}}\
-<div class='enterItem'>\
-    <label for='comment'>Comments</label>\
-    <textarea id='comment' placeholder='Add Comment' rows='3' cols='20'>\
-    </textarea>\
-    <button id='commentSubmit' class='btn'>Add Comment</button>\
-</div>\
-</div>\
-</div>\
-");*/
-
 var comments_list = doT.template("\
 <div class='accordion' id='accordion'>\
 {{~it.data :value:index}}\
@@ -53,18 +31,18 @@ var comments_list = doT.template("\
 {{=value.name}}\
 </a>\
 </div>\
-<div id='collapse{{=index}}' class='accordion-body collapse in'>\
+<div id='collapse{{=index}}' class='accordion-body collapse'>\
 <div class='accordion-inner'>\
 {{~value.comments :val:ind}}\
 <div class='itemCom'>\
 <p>{{=val.comment}}</p>\
-<span><a class='thumbs' href='#' title='Vote For this answer' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-ud='up'><i class='icon-thumbs-up thumbs'></i> <em>{{=val.up_votes}}</em></a> | <a href='#' class='thumbs' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-ud='down' title='Vote Against this answer'><i class='icon-thumbs-down'></i> <em>{{=val.down_votes}}</em></a></span>\
+<span><a class='thumbs' href='#' title='Vote For this answer' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-can-vote={{=val.can_vote}} data-ud='up'><i class='icon-thumbs-up thumbs'></i> <em>{{=val.up_votes}}</em></a> | <a href='#' class='thumbs' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-ud='down' title='Vote Against this answer' data-can-vote={{=val.can_vote}}><i class='icon-thumbs-down'></i> <em>{{=val.down_votes}}</em></a></span>\
 </div>\
 {{~}}\
 </div>\
 <div class='enterItem'>\
     <label for='comment'>Comments</label>\
-    <textarea id='{{=value.id}}comment' class='comm' placeholder='Add Comment' rows='3' cols='10'></textarea>\
+    <input id='{{=value.id}}comment' type='text' class='comm' placeholder='Add Comment' />\
     <br>\
     <button class='btn commentSub' data-item-id={{=value.id}} >Add Comment</button>\
 </div>\
