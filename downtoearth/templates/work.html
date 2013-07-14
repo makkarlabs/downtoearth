@@ -4,6 +4,8 @@
 {% block includes %}
     <script src="{{url_for('static',filename = 'js/doT.min.js')}}"></script>
     <script src="{{url_for('static',filename = 'js/dot_templates.js')}}"></script>
+    <script src="{{url_for('static',filename = 'js/jquery.raty.js')}}"></script>
+
 {% endblock %}
 
 {% block body %}
@@ -11,11 +13,30 @@
     </div>
 
     <script type="text/javascript">
+        function star(){
+                $('.star').raty({
+                      cancel   : true,
+                      cancelOff: 'static/js/img/cancel-off.png',
+                      cancelOn : 'static/js/img/cancel-on.png',
+                      half     : true,
+                      size     : 24,
+                      starHalf : 'static/js/img/star-half.png',
+                      starOff  : 'static/js/img/star-off.png',
+                      starOn   : 'static/js/img/star-on.png',
+                      score: function() {
+                              return $(this).attr('data-score');
+                                }
+                });
+            };
         $(document).ready(function(data) {
+            
+            //star();
             $.post("/api/list/restaurants", function(data) {
                 var resList = res_list(data);
+                console.log(data);
                 $("#res_List").html(resList);
-                $("div.enclosure").click(function() {
+                star();
+               $("div.enclosure").click(function() {
                     window.location.href = "/restaurants/" + $(this).attr('data-name');
                 });
             });

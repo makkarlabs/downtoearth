@@ -93,7 +93,9 @@ def restaurants():
 @app.route('/restaurants/<restaurant_name>')
 def restaurants_page(restaurant_name = None):
     if restaurant_name is not None:
-        store_id = Store.query.filter_by(store_name = restaurant_name).first().id
+        store = Store.query.filter_by(store_name = restaurant_name).first()
+        store_id = store.id
+        store_location = store.store_address
         return render_template('todo.html', data={'store_name': restaurant_name, 'id': store_id})
 
 
@@ -174,6 +176,11 @@ def list_restaurants():
         dat['name'] = store.store_name
         dat['photo_url'] = store.store_photo_url
         dat['location'] = store.store_location
+        store_rate = 0
+        if ratings_api(store.store_name, store.store_location)!= None:
+            store_rate = ratings_api(store.store_name, store.store_location)
+        dat['rating'] = store_rate
+
         data.append(dat)
     return jsonify(data=data)
 
@@ -217,6 +224,7 @@ def list_comments():
             tdat['up_votes'] = comment.up_votes
             tdat['down_votes'] = comment.down_votes
             tdat['c_id'] = comment.id
+            tdat['sentiment'] = comment.sentiment
             #tdat['timestamp'] = comment.timestamp
             tdat['commenter_name'] = comment.commenter_name
             tdat['item_name'] = Item.query.filter_by(id=comment.cat_id).first().item_name
@@ -264,17 +272,15 @@ def add_item():
 
     return render_template("additem.html", additem_form = AddItemForm())
 
-@app.route('/rating', methods=['GET'])
-def ratings_api():
-    name = request.args.get('name', '')
-    place = request.args.get('place', '')
+#@app.route('/rating', methods=['GET'])
+def ratings_api(name=None, place=None):
     response = urllib2.urlopen("http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20local.search%20where%20query%3D'"+name+"'%20and%20location%3D%22"+place+"%22%20and%20minimum_rating%3D3&format=json")
     jsonres = response.read()
     data = json.loads(jsonres)
     try:
         return data["query"]["results"]["Result"][0]["Rating"]["AverageRating"]
     except:
-        return "0"
+        return None
 
 #@app.route('/tweets', methods=['GET', 'POST'])
 def tweets_add(qstr=None):
