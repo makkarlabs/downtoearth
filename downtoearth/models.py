@@ -94,8 +94,12 @@ social = Social(app, SQLAlchemyConnectionDatastore(db, Connection))
 
 
 def list_restaurants_select():
-    data=[]
-    for store in Store.query.all():
-        dat = store.id, store.store_name
-        data.append(dat)
-    return data
+    try:
+        data=[]
+        for store in Store.query.all():
+	    dat = store.id, store.store_name
+	    data.append(dat)
+        return data
+    except:
+        pass
+
