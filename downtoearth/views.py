@@ -272,3 +272,25 @@ def analysis(text):
         return response.body['sentiment-score']
     except:
         return 0
+
+@app.route('/search', methods=['POST'])
+def pannithola():
+    try:
+        qstr = request.form['query']
+        if qstr is not "":
+            search = Store.query.filter(Store.store_name.like("%"+qstr+"%")).all()
+            data = []
+            for x in search:
+                dat = {}
+                dat['id'] = x.id
+                dat['name'] = x.store_name
+                data.append(dat)
+            if len(data) == 0:
+                dat = {}
+                dat['id'] = 999
+                dat['name'] = 'No Restaurants Found'
+                data.append(dat)
+            return jsonify(data = data)
+    except KeyError:
+        abort(405)
+

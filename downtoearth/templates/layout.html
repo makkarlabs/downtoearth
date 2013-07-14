@@ -40,27 +40,48 @@
   </head>
 
   <body>
-
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
-          <button type="button" class="btn btn-navbar trans" data-toggle="collapse" data-target=".nav-collapse">
+          <button type="button" class="btn btn-navbar trans" id="open" data-toggle="collapse" data-target=".nav-collapse">
             <i class="icon-search icon-white"></i>
           </button>
           <a class="brand" href="#">Grapevine</a>
           <div class="nav-collapse collapse">
             <form class="navbar-search pull-right">
                 <div class="input-append">
-                  <input type="text" class="input-large" placeholder="Search">
-                  <button class="btn btn-navbar trans" type="button"><i class="icon-search icon-white"></i></button>
+                  <input type="text" class="input-large" id="searchBox" placeholder="Search">
+                  <button class="btn btn-navbar trans" id="searchButton" type="button"><i class="icon-search icon-white"></i></button>
                 </div>
             </form>
           </div>
         </div>
       </div>
     </div>
-
+    <div id="rest_list">
     {% block body %}{% endblock %}
-
+    </div>
+  <script type="text/javascript">
+    $(document).ready(function(data) {
+      $("#open").click(function() {
+        $("#searchBox").focus();
+      })
+      $("#searchButton").click(function() {
+        if($("#searchBox").val()!="") {
+          $.post("/search", {'query': $("#searchBox").val()}, function(data) {
+              var resList = search_res_list(data);
+              $("#rest_list").html(resList);
+              $("div.enclosure").click(function() {
+                console.log(data);
+                if(data.data[0].id!=999)
+                  window.location.href = "/restaurants/" + $(this).attr('data-name');
+                else
+                  window.location.href = "/restaurants";
+              });
+          });
+        }
+      });
+    });
+    </script>
   </body>
 </html>

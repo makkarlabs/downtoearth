@@ -12,6 +12,19 @@ var res_list = doT.template("\
 </div>\
 ");
 
+var search_res_list = doT.template("\
+<div class='media'>\
+    <h2 class='media-heading'>Search Results</h2>\
+    {{~it.data :value: index}}\
+    <div class='enclosure item' data-name='{{=value.name}}'>\
+    <div class='media-body'>\
+        <h4 id='resName + ' class='media-heading'>{{=value.name}}</h4>\
+    </div>\
+    </div>\
+    {{~}}\
+</div>\
+");
+
 var items_list = doT.template("\
 <div class='media'>\
     {{~it.data :value: index}}\
