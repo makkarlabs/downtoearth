@@ -5,6 +5,7 @@ function showDialogOnSite(dialog_text) {
         $.pnotify.defaults.history = false;
 	$.pnotify({
 		title: 'GrapeVine',
-		text: dialog_text
+		text: dialog_text,
+		hide: false
 	});
 }
