@@ -65,14 +65,16 @@ class Comment(db.Model):
     down_votes = db.Column(db.Integer)
     commenter_id = db.Column(db.Integer)
     commenter_name = db.Column(db.String(255))
-    def __init__(self,cat_name, comment, cat_id, commenter_id):
+    url = db.Column(db.String(255))
+    def __init__(self,cat_name, comment, cat_id, commenter_id, url = ""):
         self.cat_id = cat_id
         self.comment = comment
         self.up_votes = 0
         self.down_votes = 0
         self.commenter_id = commenter_id
         self.commenter_name = Connection.query.filter_by(user_id = commenter_id).first().display_name
-
+        self.url = url
+        
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer)

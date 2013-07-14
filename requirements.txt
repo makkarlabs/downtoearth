@@ -6,3 +6,5 @@ flask-bcrypt
 flask-sqlalchemy
 flask-social
 http://github.com/pythonforfacebook/facebook-sdk/tarball/master
+unirest
+https://github.com/ryanmcgrath/twython.git

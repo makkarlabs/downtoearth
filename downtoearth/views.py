@@ -196,7 +196,25 @@ def list_comments():
         dat['comments'] = tdata
         data.append(dat)
     return jsonify(data=data)
-
+@app.route('/api/url', methods=['POST'])
+def geturl():
+    tdata=[]
+    for comment in Comment.query.filter_by(cat_id = store.id).all():
+        tdat = {}
+        tdat['comment'] = comment.comment
+        tdat['cat_id'] = comment.cat_id
+        tdat['cat_name'] = comment.cat_name
+        tdat['up_votes'] = comment.up_votes
+        tdat['down_votes'] = comment.down_votes
+        tdat['c_id'] = comment.id
+        #tdat['timestamp'] = comment.timestamp
+        tdat['commenter_name'] = comment.commenter_name
+        tdat['item_name'] = Item.query.filter_by(id=comment.cat_id).first().item_name
+        if len(Vote.query.filter_by(user_id = current_user.id).filter_by(comment_id = comment.id).all()) > 0:
+            tdat['can_vote'] = False
+        else:
+            tdat['can_vote'] = True
+        tdata.append(tdat)
 @app.route('/additem', methods=['GET','POST'])
 def add_item():
     form = AddItemForm(request.form)    
@@ -229,25 +247,22 @@ def tweets_shit():
     qstr = request.args.get('query', '')
     print "tweets "
     print qstr
-    #try:
-    from twython import Twython, TwythonError
-    import urllib
-    print qstr
-    twitter = Twython("YyrtLcLXY3rK0NB4hxPxg", "ITufCiliKOKXJMg2NwH8DjearGD5ZzSbWGBmrADPJk", "154058629-sXgrILo1Wn1iQqY1eE422McGWkIdQP7BMLwFmmew", "7LKdy7WretsZK8mKoSGsQt6waPodtIpLF3pFLypQ")
-    print qstr
-    search_results = twitter.search(q=qstr, count=50)
-
-    for tweet in search_results['statuses']:
-        try:
-            if float(analysis(urllib.quote(tweet['text'])).encode('ascii', 'ignore')) < -0.2:
-                print tweet['text']
-            else:
-                print "has a low score"
-        except:
-            pass
-        #print type()
-    #except:
-        #abort(404)
+    try:
+        from twython import Twython, TwythonError
+        import urllib
+        twitter = Twython("YyrtLcLXY3rK0NB4hxPxg", "ITufCiliKOKXJMg2NwH8DjearGD5ZzSbWGBmrADPJk", "154058629-sXgrILo1Wn1iQqY1eE422McGWkIdQP7BMLwFmmew", "7LKdy7WretsZK8mKoSGsQt6waPodtIpLF3pFLypQ")
+        search_results = twitter.search(q=qstr, count=50)
+        for tweet in search_results['statuses']:
+            try:
+                if float(analysis(urllib.quote(tweet['text'])).encode('ascii', 'ignore')) < -0.2:
+                    print tweet['text']
+                else:
+                    print "has a low score"
+            except:
+                pass
+            #print type()
+    except:
+        abort(404)
 
 def analysis(text):
     try:
