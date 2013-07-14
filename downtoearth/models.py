@@ -66,7 +66,9 @@ class Comment(db.Model):
     commenter_id = db.Column(db.Integer)
     commenter_name = db.Column(db.String(255))
     url = db.Column(db.String(255))
-    def __init__(self,cat_name, comment, cat_id, commenter_id, url = ""):
+    sentiment = db.Column(db.Numeric())
+    def __init__(self, cat_name, comment, cat_id, commenter_id, url = "", sentiment = -1):
+        self.cat_name = cat_name
         self.cat_id = cat_id
         self.comment = comment
         self.up_votes = 0
@@ -74,7 +76,8 @@ class Comment(db.Model):
         self.commenter_id = commenter_id
         self.commenter_name = Connection.query.filter_by(user_id = commenter_id).first().display_name
         self.url = url
-        
+        self.sentiment = sentiment
+
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer)
@@ -87,6 +90,20 @@ class Vote(db.Model):
         self.item_id = item_id
         self.isup = isup
 
+class Tweets(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    store = db.Column(db.String(255))
+    handle = db.Column(db.String(255))
+    name = db.Column(db.String(255))
+    text = db.Column(db.Text())
+    dp = db.Column(db.Text())
+    def __init__(self, store, handle, name, text, dp):
+        self.store = store
+        self.handle = handle
+        self.name = name
+        self.text = text
+        self.dp = dp
+
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
@@ -97,9 +114,8 @@ def list_restaurants_select():
     try:
         data=[]
         for store in Store.query.all():
-	    dat = store.id, store.store_name
-	    data.append(dat)
+            dat = store.id, store.store_name
+            data.append(dat)
         return data
     except:
         pass
-
