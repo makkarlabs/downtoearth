@@ -235,7 +235,6 @@ def ratings_api():
     place = request.args.get('place', '')
     response = urllib2.urlopen("http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20local.search%20where%20query%3D'"+name+"'%20and%20location%3D%22"+place+"%22%20and%20minimum_rating%3D3&format=json")
     jsonres = response.read()
-    #print jsonres
     data = json.loads(jsonres)
     try:
         return data["query"]["results"]["Result"][0]["Rating"]["AverageRating"]
@@ -245,8 +244,6 @@ def ratings_api():
 @app.route('/tweets', methods=['GET', 'POST'])
 def tweets_shit():
     qstr = request.args.get('query', '')
-    print "tweets "
-    print qstr
     try:
         from twython import Twython, TwythonError
         import urllib
