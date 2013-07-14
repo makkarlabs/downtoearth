@@ -7,25 +7,35 @@ function(request, sender, sendResponse) {
 console.log(sender.tab ?
             "from a content script:" + sender.tab.url :
             "from the extension");
-if (request.site_url === "dominos_co_in") {
-    console.log("hello");
-    chrome.browserAction.setPopup({"popup":"site_handlers/dominos_co_in.html"});
-    injected_ids.push(sender.tab.id);
-    injected_ids_map[sender.tab.id] = "dominos_co_in";
-  sendResponse({farewell: "good"});
-}
+   if (request.site_url === "dominos_co_in") {
+        console.log("hello");
+        chrome.browserAction.setPopup({"popup":"site_handlers/dominos_co_in.html"});
+        injected_ids.push(sender.tab.id);
+        injected_ids_map[sender.tab.id] = "dominos_co_in";
+      sendResponse({farewell: "good"});
+    }
 
-else if (request.site_url === "mcdonaldsindia_com") {
-    console.log("hello");
-    chrome.browserAction.setPopup({"popup":"site_handlers/mcdonaldsindia_com.html"});
-    injected_ids.push(sender.tab.id);
-    injected_ids_map[sender.tab.id] = "mcdonaldsindia_com";
-  sendResponse({farewell: "good"});
-}
-else {
-    chrome.browserAction.setPopup({"popup":"site_handlers/common.html"});
-  sendResponse({farewell: "bye"});
-}
+    else if (request.site_url === "mcdonaldsindia_com") {
+        console.log("hello");
+        chrome.browserAction.setPopup({"popup":"site_handlers/mcdonaldsindia_com.html"});
+        injected_ids.push(sender.tab.id);
+        injected_ids_map[sender.tab.id] = "mcdonaldsindia_com";
+      sendResponse({farewell: "good"});
+    }
+
+
+    else if (request.site_url === "dom_in_leba") {
+        console.log("hello");
+        chrome.browserAction.setPopup({"popup":"site_handlers/dom_in_leba.html"});
+        injected_ids.push(sender.tab.id);
+        injected_ids_map[sender.tab.id] = "dom_in_leba";
+      sendResponse({farewell: "good"});
+    }
+
+    else {
+        chrome.browserAction.setPopup({"popup":"site_handlers/common.html"});
+      sendResponse({farewell: "bye"});
+    }
 });
 
 
