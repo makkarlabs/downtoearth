@@ -63,7 +63,6 @@ class Comment(db.Model):
     comment = db.Column(db.String(2048))
     up_votes = db.Column(db.Integer)
     down_votes = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime())
     commenter_id = db.Column(db.Integer)
     commenter_name = db.Column(db.String(255))
     def __init__(self,cat_name, comment, cat_id, commenter_id):
@@ -71,21 +70,20 @@ class Comment(db.Model):
         self.comment = comment
         self.up_votes = 0
         self.down_votes = 0
-        self.timestamp = datetime.now()
         self.commenter_id = commenter_id
         self.commenter_name = Connection.query.filter_by(user_id = commenter_id).first().display_name
 
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer)
+    item_id = db.Column(db.Integer)
     comment_id = db.Column(db.Integer)
     isup = db.Column(db.Boolean())
-    timestamp = db.Column(db.DateTime())
-    def __init__(self, user_id, comment_id, isup):
+    def __init__(self, user_id, item_id, comment_id, isup):
         self.user_id = user_id
         self.comment_id = comment_id
+        self.item_id = item_id
         self.isup = isup
-        timestamp = datetime.now()
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)

@@ -88,19 +88,23 @@ def restaurants_page(restaurant_name = None):
 
 @app.route('/api/add_comment', methods=['POST'])
 def add_comment():
-    try:
-        comment = Comment(request.form['item_id'], request.form['comment'], current_user.id)
-        db.session.add(comment)
-        db.session.commit()
-    except:
+    #try:
+    comment = Comment("Items", request.form['comment'], request.form['item_id'], current_user.id)
+    db.session.add(comment)
+    db.session.commit()
+    """except:
         raise KeyError
-        abort(403)
+        abort(403)"""
+    return jsonify(data={"success":1, "message":"Commented"})
 
 @app.route('/api/up_vote', methods=['POST'])
 def up_vote():
     try:
         vote = Vote(current_user.id, request.form['item_id'], request.form['comment_id'], True)
+        comment = Comment.query.filter_by(id=request.form['comment_id']).first()
+        comment.up_votes += 1
         db.session.add(vote)
+        db.session.add(comment)
         db.session.commit()
     except:
         print "Database error"
@@ -111,7 +115,10 @@ def up_vote():
 def down_vote():
     try:
         vote = Vote(current_user.id, request.form['item_id'], request.form['comment_id'], False)
+        comment = Comment.query.filter_by(id=request.form['comment_id']).first()
+        comment.down_votes += 1
         db.session.add(vote)
+        db.session.add(comment)
         db.session.commit()
     except:
         print "Database error"
@@ -176,10 +183,11 @@ def list_comments():
             tdat['cat_id'] = comment.cat_id
             tdat['cat_name'] = comment.cat_name
             tdat['up_votes'] = comment.up_votes
-            tdat['down_vote'] = comment.down_votes
-            tdat['timestamp'] = comment.timestamp
+            tdat['down_votes'] = comment.down_votes
+            tdat['c_id'] = comment.id
+            #tdat['timestamp'] = comment.timestamp
             tdat['commenter_name'] = comment.commenter_name
-            tdat['item_name'] = Item.query.filter_by(id=cat_id).first().item_name
+            tdat['item_name'] = Item.query.filter_by(id=comment.cat_id).first().item_name
             if len(Vote.query.filter_by(user_id = current_user.id).filter_by(comment_id = comment.id).all()) > 0:
                 tdat['can_vote'] = False
             else:

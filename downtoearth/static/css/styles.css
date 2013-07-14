@@ -6,6 +6,18 @@
     max-width: 64px;
     max-height: 64px;
 }
+.itemCom {
+    padding: 10px;
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+}
+.itemCom:hover {
+    border-bottom: 1px solid #ddd;
+}
+.thumbs:hover {
+    text-decoration: none;
+    color: #000;
+}
 .item {
     padding: 10px;
     border-bottom: 1px solid #ddd;
@@ -13,12 +25,6 @@
 .item:hover {
     cursor: pointer;
     background: #eee;
-}
-.enterItem {
-    padding: 10px;
-    margin-right: auto;
-    margin-left: auto;
-    width: 20%;
 }
 .show {
     height: auto;
