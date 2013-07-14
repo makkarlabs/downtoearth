@@ -203,7 +203,7 @@ def add_item():
 
     return render_template("additem.html", additem_form = AddItemForm())
 
-@app.route('/rating', methods=['GET','POST'])
+@app.route('/rating', methods=['GET'])
 def ratings_api():
     name = request.args.get('name', '')
     place = request.args.get('place', '')
@@ -215,3 +215,40 @@ def ratings_api():
         return data["query"]["results"]["Result"][0]["Rating"]["AverageRating"]
     except:
         return "0"
+
+@app.route('/tweets', methods=['GET', 'POST'])
+def tweets_shit():
+    qstr = request.args.get('query', '')
+    print "tweets "
+    print qstr
+    #try:
+    from twython import Twython, TwythonError
+    import urllib
+    print qstr
+    twitter = Twython("YyrtLcLXY3rK0NB4hxPxg", "ITufCiliKOKXJMg2NwH8DjearGD5ZzSbWGBmrADPJk", "154058629-sXgrILo1Wn1iQqY1eE422McGWkIdQP7BMLwFmmew", "7LKdy7WretsZK8mKoSGsQt6waPodtIpLF3pFLypQ")
+    print qstr
+    search_results = twitter.search(q=qstr, count=50)
+
+    for tweet in search_results['statuses']:
+        try:
+            if float(analysis(urllib.quote(tweet['text'])).encode('ascii', 'ignore')) < -0.2:
+                print tweet['text']
+            else:
+                print "has a low score"
+        except:
+            pass
+        #print type()
+    #except:
+        #abort(404)
+
+def analysis(text):
+    try:
+        import unirest
+        response = unirest.get(
+            "https://loudelement-free-natural-language-processing-service.p.mashape.com/nlp-text/?text="+text,
+            {
+            "X-Mashape-Authorization": "ZfkjlcFrPHhgFlc2DjlwjjgyrNUgiXDZ"
+            });
+        return response.body['sentiment-score']
+    except:
+        return 0
