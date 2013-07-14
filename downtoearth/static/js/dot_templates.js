@@ -27,11 +27,11 @@ var comments_list = doT.template("\
 {{~it.data :value:index}}\
 <div class='accordion-group'>\
 <div class='accordion-heading'>\
-<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapse{{=index}}'>\
+<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapse{{=value.id}}'>\
 {{=value.name}}\
 </a>\
 </div>\
-<div id='collapse{{=index}}' class='accordion-body collapse'>\
+<div id='collapse{{=value.id}}' class='accordion-body collapse'>\
 <div class='accordion-inner'>\
 {{~value.comments :val:ind}}\
 <div class='itemCom'>\
@@ -50,4 +50,11 @@ var comments_list = doT.template("\
 </div>\
 {{~}}\
 </div>\
+");
+
+var comment = doT.template("\
+    <div class='itemCom'>\
+    <p>{{=it.comment}}</p>\
+    <span><a class='thumbs' href='#' title='Vote For this answer' data-item-id={{=it.item_id}} data-c-id={{=it.comment_id}} data-can-vote='true' data-ud='up'><i class='icon-thumbs-up thumbs'></i> <em id='voteup{{=it.comment_id}}'>0</em></a> \
+    | <a href='#' class='thumbs' data-item-id={{=it.item_id}} data-c-id={{=it.comment_id}} data-ud='down' title='Vote Against this answer' data-can-vote='true'><i class='icon-thumbs-down'></i> <em id='votedown{{=it.comment_id}}'>0</em></a></span>\
 ");

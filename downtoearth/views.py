@@ -96,7 +96,9 @@ def add_comment():
     """except:
         raise KeyError
         abort(403)"""
-    return jsonify(data={"success":1, "message":"Commented"})
+    comments_data = list_comments_data(request.form['store_name'])
+    index = len(comments_data)
+    return jsonify({"success":1, "message":"Commented", "comment":comment.comment, "index":index, "item_id":request.form["item_id"], "comment_id":comment.id})
 
 @app.route('/api/up_vote', methods=['POST'])
 @login_required
@@ -172,15 +174,9 @@ def list_items():
     except KeyError:
         return abort(404)
 
-@app.route('/api/list/comments', methods=['POST'])
-def list_comments():
-    """try:
-        cat_id = request.form['cat_id']
-    except:
-        raise KeyError
-        abort(404)"""
+def list_comments_data(store_name):
     data=[]
-    store_name = request.form['store_name']
+    #store_name = request.form['store_name']
     store_id = Store.query.filter_by(store_name = store_name).first().id
     print store_id
     for store in Item.query.filter_by(store_id = int(store_id)):
@@ -207,7 +203,18 @@ def list_comments():
             tdata.append(tdat)
         dat['comments'] = tdata
         data.append(dat)
-    return jsonify(data=data)
+        print data
+    return data
+
+
+@app.route('/api/list/comments', methods=['POST'])
+def list_comments():
+    """try:
+        cat_id = request.form['cat_id']
+    except:
+        raise KeyError
+        abort(404)"""
+    return jsonify(data=list_comments_data(request.form['store_name']))
 
 @app.route('/api/url', methods=['POST'])
 def geturl():

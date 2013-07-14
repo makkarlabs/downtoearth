@@ -9,11 +9,9 @@
     <div id="items_list">
     </div>
         <script type="text/javascript">
-            $(document).ready(function() {
-                $.post('/api/list/comments', {'store_name': "{{data.store_name}}" },function(data) {
-                    console.log(data);
-                    $('#items_list').html(comments_list(data));
-                    $('a.thumbs').click(function() {
+        function update_handlers() {
+            $('a.thumbs').click(function(e) {
+                        e.preventDefault();
                         if($(this).attr('data-can-vote') == 'true') {
                             if($(this).attr('data-ud') == 'up') {
                                 $.post('/api/up_vote', {'item_id': $(this).attr('data-item-id'), 'comment_id': $(this).attr('data-c-id')}, function(data1) {
@@ -36,17 +34,32 @@
                                     } 
                                 });
                             }
-                        }
+                        }   
                     });
+        }
+        function list_comments(data) {
+                console.log(data);
+                    $('#items_list').html(comments_list(data));
+                    update_handlers();
                     $(".commentSub").click(function() {
                         var it_id = $(this).attr("data-item-id");
                         var commt = $("#" + it_id +"comment").val();
                         if(commt!="") {
-                            $.post("/api/add_comment", {'item_id': it_id, 'comment': commt}, function() {
-                                window.location.href = "/restaurants/{{data.store_name}}";
+                            $.post("/api/add_comment", {'item_id': it_id, 'comment': commt, 'store_name': "{{data.store_name}}"}, function(data) {
+                                console.log(data);
+                                console.log(comment(data));
+                                $("#collapse"+data.item_id+" > .accordion-inner").append(comment(data));
+                                update_handlers();
+                                $("#"+data.item_id+"comment").val("");
+                                //list_comments(data.comments_data);
+                                //window.location.href = "/restaurants/{{data.store_name}}";
                             });
                         }
                     });
+        }
+            $(document).ready(function() {
+                $.post('/api/list/comments', {'store_name': "{{data.store_name}}" },function(data) {
+                    list_comments(data);
                 });
             });
         </script>
