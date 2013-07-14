@@ -1,6 +1,6 @@
 $(function() {
     showDialogOnSite("Check the reviews for this site by clicking on the extension above.");
-    chrome.runtime.sendMessage({"site_url": "dominos_co_in"}, function(response) {
+    chrome.runtime.sendMessage({"site_url": "mcdonaldsindia_com"}, function(response) {
         console.log(response);
     });
     console.log($("#GrapeVineFrame").attr('src'));

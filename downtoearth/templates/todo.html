@@ -17,11 +17,23 @@
                         if($(this).attr('data-can-vote') == 'true') {
                             if($(this).attr('data-ud') == 'up') {
                                 $.post('/api/up_vote', {'item_id': $(this).attr('data-item-id'), 'comment_id': $(this).attr('data-c-id')}, function(data1) {
-                                    window.location.href = "/restaurants/{{data.store_name}}";
+                                    //window.location.href = "/restaurants/{{data.store_name}}";
+                                    console.log(data1.success);
+                                    if(data1.success === 1) {
+                                        $("#voteup"+data1.id).html(parseInt($("#voteup"+data1.id).html()) + 1);
+                                        console.log($("#voteup"+data1.id).html());
+
+                                    }
                                 });
                             } else {
                                 $.post('/api/down_vote', {'item_id': $(this).attr('data-item-id'), 'comment_id': $(this).attr('data-c-id')}, function(data1) {
-                                    window.location.href = "/restaurants/{{data.store_name}}";
+                                    //window.location.href = "/restaurants/{{data.store_name}}";
+                                   console.log(data1.success);
+                                    if(data1.success === 1) {
+                                        $("#votedown"+data1.id).html(parseInt($("#votedown"+data1.id).html()) + 1);
+                                        console.log($("#votedown"+data1.id).html());
+
+                                    } 
                                 });
                             }
                         }

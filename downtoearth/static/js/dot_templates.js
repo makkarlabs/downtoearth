@@ -12,6 +12,19 @@ var res_list = doT.template("\
 </div>\
 ");
 
+var search_res_list = doT.template("\
+<div class='media'>\
+    <h2 class='media-heading'>Search Results</h2>\
+    {{~it.data :value: index}}\
+    <div class='enclosure item' data-name='{{=value.name}}'>\
+    <div class='media-body'>\
+        <h4 id='resName + ' class='media-heading'>{{=value.name}}</h4>\
+    </div>\
+    </div>\
+    {{~}}\
+</div>\
+");
+
 var items_list = doT.template("\
 <div class='media'>\
     {{~it.data :value: index}}\
@@ -36,7 +49,8 @@ var comments_list = doT.template("\
 {{~value.comments :val:ind}}\
 <div class='itemCom'>\
 <p>{{=val.comment}}</p>\
-<span><a class='thumbs' href='#' title='Vote For this answer' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-can-vote={{=val.can_vote}} data-ud='up'><i class='icon-thumbs-up thumbs'></i> <em>{{=val.up_votes}}</em></a> | <a href='#' class='thumbs' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-ud='down' title='Vote Against this answer' data-can-vote={{=val.can_vote}}><i class='icon-thumbs-down'></i> <em>{{=val.down_votes}}</em></a></span>\
+<span><a class='thumbs' href='#' title='Vote For this answer' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-can-vote={{=val.can_vote}} data-ud='up'><i class='icon-thumbs-up thumbs'></i> <em id='voteup{{=val.c_id}}'>{{=val.up_votes}}</em></a> \
+| <a href='#' class='thumbs' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-ud='down' title='Vote Against this answer' data-can-vote={{=val.can_vote}}><i class='icon-thumbs-down'></i> <em id='votedown{{=val.c_id}}'>{{=val.down_votes}}</em></a></span>\
 </div>\
 {{~}}\
 </div>\
