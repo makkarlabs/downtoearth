@@ -40,6 +40,17 @@ def index():
 
 #def is_subscribed(user):
 #    return User.query.filter_by(id=user.id).first().is_subscribed
+def analysis(text):
+    try:
+        import unirest
+        response = unirest.get(
+            "https://loudelement-free-natural-language-processing-service.p.mashape.com/nlp-text/?text="+text,
+            {
+            "X-Mashape-Authorization": "ZfkjlcFrPHhgFlc2DjlwjjgyrNUgiXDZ"
+            });
+        return response.body['sentiment-score']
+    except:
+        return 0
 
 @app.route('/adduser', methods=['GET', 'POST'])
 @app.route('/adduser/<provider_id>', methods=['GET', 'POST'])
@@ -88,12 +99,17 @@ def restaurants_page(restaurant_name = None):
 
 @app.route('/api/add_comment', methods=['POST'])
 def add_comment():
-    sentiment = 0
+    import urllib
+    sent = -1
     try:
         sentiment = float(analysis(urllib.quote(request.form['comment'])).encode('ascii', 'ignore'))
-    except:
-        pass
-    comment = Comment("Items", request.form['comment'], request.form['item_id'], current_user.id, "", sentiment)
+        if sentiment > 0:
+            sent = 1
+        elif sentiment <= 0:
+            sent = 0
+    except Exception, e:
+        print e
+    comment = Comment("Items", request.form['comment'], request.form['item_id'], current_user.id, "", sent)
     db.session.add(comment)
     db.session.commit()
     """except:
@@ -280,14 +296,4 @@ def tweets_add(qstr=None):
     #except:
     #    abort(404)
 
-def analysis(text):
-    try:
-        import unirest
-        response = unirest.get(
-            "https://loudelement-free-natural-language-processing-service.p.mashape.com/nlp-text/?text="+text,
-            {
-            "X-Mashape-Authorization": "ZfkjlcFrPHhgFlc2DjlwjjgyrNUgiXDZ"
-            });
-        return response.body['sentiment-score']
-    except:
-        return 0
+

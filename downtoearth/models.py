@@ -67,7 +67,7 @@ class Comment(db.Model):
     commenter_name = db.Column(db.String(255))
     url = db.Column(db.String(255))
     sentiment = db.Column(db.Numeric())
-    def __init__(self, cat_name, comment, cat_id, commenter_id, url = "", sentiment = 0):
+    def __init__(self, cat_name, comment, cat_id, commenter_id, url = "", sentiment = -1):
         self.cat_name = cat_name
         self.cat_id = cat_id
         self.comment = comment
