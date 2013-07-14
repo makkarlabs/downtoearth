@@ -60,6 +60,10 @@
                 $.post('/api/list/comments', {'store_name': "{{data.store_name}}" },function(data) {
                     list_comments(data);
                 });
+                $.get('/api/tweets', {'q': "{{data.store_name}}"}, function(data) {
+                    console.log(data);
+                    $("#tweet_list").html(tweets_accord(data));
+                });
             });
         </script>
 </div>

@@ -220,7 +220,7 @@ def list_comments_data(store_name):
             tdat['up_votes'] = comment.up_votes
             tdat['down_votes'] = comment.down_votes
             tdat['c_id'] = comment.id
-            tdat['sentiment'] = comment.sentiment
+            tdat['sentiment'] = str(comment.sentiment)
             #tdat['timestamp'] = comment.timestamp
             tdat['commenter_name'] = comment.commenter_name
             tdat['item_name'] = Item.query.filter_by(id=comment.cat_id).first().item_name

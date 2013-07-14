@@ -47,7 +47,7 @@ var comments_list = doT.template("\
 <div id='collapse{{=value.id}}' class='accordion-body collapse'>\
 <div class='accordion-inner'>\
 {{~value.comments :val:ind}}\
-<div class='itemCom'>\
+<div class='itemCom{{=val.sentiment}}'>\
 <p>{{=val.comment}}</p>\
 <span><a class='thumbs' href='#' title='Vote For this answer' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-can-vote={{=val.can_vote}} data-ud='up'><i class='icon-thumbs-up thumbs'></i> <em id='voteup{{=val.c_id}}'>{{=val.up_votes}}</em></a> \
 | <a href='#' class='thumbs' data-item-id={{=value.id}} data-c-id={{=val.c_id}} data-ud='down' title='Vote Against this answer' data-can-vote={{=val.can_vote}}><i class='icon-thumbs-down'></i> <em id='votedown{{=val.c_id}}'>{{=val.down_votes}}</em></a></span>\
@@ -70,4 +70,25 @@ var comment = doT.template("\
     <p>{{=it.comment}}</p>\
     <span><a class='thumbs' href='#' title='Vote For this answer' data-item-id={{=it.item_id}} data-c-id={{=it.comment_id}} data-can-vote='true' data-ud='up'><i class='icon-thumbs-up thumbs'></i> <em id='voteup{{=it.comment_id}}'>0</em></a> \
     | <a href='#' class='thumbs' data-item-id={{=it.item_id}} data-c-id={{=it.comment_id}} data-ud='down' title='Vote Against this answer' data-can-vote='true'><i class='icon-thumbs-down'></i> <em id='votedown{{=it.comment_id}}'>0</em></a></span>\
+");
+
+var tweets_accord = doT.template("\
+<div class='accordion' id='accordionTweets'>\
+<div class='accordion-group'>\
+<div class='accordion-heading'>\
+<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordionTweets' href='#collapseTweets'>\
+Related Tweets\
+</a>\
+</div>\
+<div id='collapseTweets' class='accordion-body collapse'>\
+<div class='accordion-inner'>\
+{{~it.tweets :value:index}}\
+<div class='tweetCom'>\
+<span><em>{{=value.handle}}</em> | {{=value.name}}</span>\
+<p>{{=value.text}}\
+</div>\
+{{~}}\
+</div>\
+</div>\
+</div>\
 ");

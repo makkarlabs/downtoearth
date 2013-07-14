@@ -6,12 +6,20 @@
     max-width: 64px;
     max-height: 64px;
 }
-.itemCom {
+.itemCom1 {
     padding: 10px;
-    background: #eee;
+    background: #F5F5F5;
     border-bottom: 1px solid #ddd;
 }
-.itemCom:hover {
+.itemCom0 {
+    padding: 10px;
+    background: #FF7A7A;
+    border-bottom: 1px solid #ddd;
+}
+.itemCom1:hover {
+    border-bottom: 1px solid #ddd;
+}
+.itemCom0:hover {
     border-bottom: 1px solid #ddd;
 }
 .thumbs:hover {
