@@ -8,7 +8,7 @@ from flask.ext.social.utils import get_provider_or_404
 from downtoearth import app, forms, db
 from downtoearth.models import User, social, security
 from downtoearth.models import user_datastore as ds
-from downtoearth.models import Store, Item, Comment, Vote
+from downtoearth.models import Store, Item, Comment, Vote, Tweets
 from downtoearth.forms import AddItemForm
 
 import config
@@ -40,6 +40,17 @@ def index():
 
 #def is_subscribed(user):
 #    return User.query.filter_by(id=user.id).first().is_subscribed
+def analysis(text):
+    try:
+        import unirest
+        response = unirest.get(
+            "https://loudelement-free-natural-language-processing-service.p.mashape.com/nlp-text/?text="+text,
+            {
+            "X-Mashape-Authorization": "ZfkjlcFrPHhgFlc2DjlwjjgyrNUgiXDZ"
+            });
+        return response.body['sentiment-score']
+    except:
+        return 0
 
 @app.route('/adduser', methods=['GET', 'POST'])
 @app.route('/adduser/<provider_id>', methods=['GET', 'POST'])
@@ -89,8 +100,17 @@ def restaurants_page(restaurant_name = None):
 @app.route('/api/add_comment', methods=['POST'])
 @login_required
 def add_comment():
-    #try:
-    comment = Comment("Items", request.form['comment'], request.form['item_id'], current_user.id)
+    import urllib
+    sent = -1
+    try:
+        sentiment = float(analysis(urllib.quote(request.form['comment'])).encode('ascii', 'ignore'))
+        if sentiment > 0:
+            sent = 1
+        elif sentiment <= 0:
+            sent = 0
+    except Exception, e:
+        print e
+    comment = Comment("Items", request.form['comment'], request.form['item_id'], current_user.id, "", sent)
     db.session.add(comment)
     db.session.commit()
     """except:
@@ -263,34 +283,73 @@ def ratings_api():
     except:
         return "0"
 
-@app.route('/tweets', methods=['GET', 'POST'])
-def tweets_shit():
-    qstr = request.args.get('query', '')
-    try:
-        from twython import Twython, TwythonError
-        import urllib
-        twitter = Twython("YyrtLcLXY3rK0NB4hxPxg", "ITufCiliKOKXJMg2NwH8DjearGD5ZzSbWGBmrADPJk", "154058629-sXgrILo1Wn1iQqY1eE422McGWkIdQP7BMLwFmmew", "7LKdy7WretsZK8mKoSGsQt6waPodtIpLF3pFLypQ")
-        search_results = twitter.search(q=qstr, count=50)
-        for tweet in search_results['statuses']:
-            try:
-                if float(analysis(urllib.quote(tweet['text'])).encode('ascii', 'ignore')) < -0.2:
-                    print tweet['text']
-                else:
-                    print "has a low score"
-            except:
-                pass
+#@app.route('/tweets', methods=['GET', 'POST'])
+def tweets_add(qstr=None):
+    #qstr = request.args.get('query', '')
+    #qstr = 'kfc'
+    #try:
+    from twython import Twython, TwythonError
+    import urllib
+    twitter = Twython("YyrtLcLXY3rK0NB4hxPxg", "ITufCiliKOKXJMg2NwH8DjearGD5ZzSbWGBmrADPJk", "154058629-sXgrILo1Wn1iQqY1eE422McGWkIdQP7BMLwFmmew", "7LKdy7WretsZK8mKoSGsQt6waPodtIpLF3pFLypQ")
+    search_results = twitter.search(q=qstr, count=100)
+    analysis_val = 0
+    for tweet in search_results['statuses']:
+        try:
+            analysis_val = float(analysis(urllib.quote(tweet['text'])).encode('ascii', 'ignore'))
+        except:
+            pass
+        if analysis_val < -0.1:
+            print tweet
+            text = tweet['text']
+            handle = tweet['user']['screen_name']
+            name = tweet['user']['name']
+            dp = tweet['user']['profile_image_url']
+            twt = Tweets(qstr, handle, name, text, dp)
+            db.session.add(twt)
+            db.session.commit()
+            print "commited"
+        else:
+            #pass
+            print "has a low score"
+            #except Exception,e:
+            #    print dir(e)
             #print type()
-    except:
-        abort(404)
+    #except:
+    #    abort(404)
 
-def analysis(text):
+
+
+@app.route('/search', methods=['POST'])
+def pannithola():
     try:
-        import unirest
-        response = unirest.get(
-            "https://loudelement-free-natural-language-processing-service.p.mashape.com/nlp-text/?text="+text,
-            {
-            "X-Mashape-Authorization": "ZfkjlcFrPHhgFlc2DjlwjjgyrNUgiXDZ"
-            });
-        return response.body['sentiment-score']
-    except:
-        return 0
+        qstr = request.form['query']
+        if qstr is not "":
+            search = Store.query.filter(Store.store_name.like("%"+qstr+"%")).all()
+            data = []
+            for x in search:
+                dat = {}
+                dat['id'] = x.id
+                dat['name'] = x.store_name
+                data.append(dat)
+            if len(data) == 0:
+                dat = {}
+                dat['id'] = 999
+                dat['name'] = 'No Restaurants Found'
+                data.append(dat)
+            return jsonify(data = data)
+    except KeyError:
+        abort(405)
+
+@app.route('/api/tweets')
+def get_tweets():
+    try:
+        store = request.args['q']
+        alltweets = Tweets.query.filter_by(store=store)
+        print alltweets
+        if alltweets is not None:
+            return jsonify(tweets=[i.serialize for i in alltweets.all()])
+        else:
+            return jsonify(tweets=None)
+    except Exception, e:
+        print "Hey"
+        print e

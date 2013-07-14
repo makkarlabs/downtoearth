@@ -4,22 +4,21 @@
 {% block includes %}
     <script src="{{url_for('static',filename = 'js/doT.min.js')}}"></script>
     <script src="{{url_for('static',filename = 'js/dot_templates.js')}}"></script>
-    <script src="{{url_for('static',filename = 'js/holder.js')}}"></script>
 {% endblock %}
 
 {% block body %}
-    <div id="rest_list" class="container-fluid">
+    <div id="res_List" class="container-fluid">
     </div>
 
     <script type="text/javascript">
         $(document).ready(function(data) {
             $.post("/api/list/restaurants", function(data) {
                 var resList = res_list(data);
-                $("#rest_list").html(resList);
+                $("#res_List").html(resList);
                 $("div.enclosure").click(function() {
                     window.location.href = "/restaurants/" + $(this).attr('data-name');
                 });
             });
         });
     </script>
-{% endblock %}  
+{% endblock %}
