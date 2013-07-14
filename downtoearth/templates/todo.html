@@ -18,21 +18,23 @@
                     $('a.thumbs').click(function() {
                         if($(this).attr('data-ud') == 'up') {
                             $.post('/api/up_vote', {'item_id': $(this).attr('data-item-id'), 'comment_id': $(this).attr('data-c-id')}, function(data1) {
-                                window.location.href = "/restaurants/{{data.store_name}}"
+                                window.location.href = "/restaurants/{{data.store_name}}";
                             });
                         } else {
                             $.post('/api/down_vote', {'item_id': $(this).attr('data-item-id'), 'comment_id': $(this).attr('data-c-id')}, function(data1) {
-                                window.location.href = "/restaurants/{{data.store_name}}"
+                                window.location.href = "/restaurants/{{data.store_name}}";
                             });
                         }
                     });
-                });
-                $(".commentSubmit").click(function() {
-                    if($(".comment").val()!="") {
-                        $.post("/api/addcomment", {'item_id': '{{data.id}}', 'comment': $('#comment').val()}, function() {
-                            window.location.href = "restaurants/{{data.store_name}}"
-                        });
-                    }
+                    $(".commentSub").click(function() {
+                        var it_id = $(this).attr("data-item-id");
+                        var commt = $("#" + it_id +"comment").val();
+                        if(commt!="") {
+                            $.post("/api/add_comment", {'item_id': it_id, 'comment': commt}, function() {
+                                window.location.href = "/restaurants/{{data.store_name}}";
+                            });
+                        }
+                    });
                 });
             });
         </script>

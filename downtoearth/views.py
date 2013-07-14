@@ -88,13 +88,14 @@ def restaurants_page(restaurant_name = None):
 
 @app.route('/api/add_comment', methods=['POST'])
 def add_comment():
-    try:
-        comment = Comment(request.form['item_id'], request.form['comment'], current_user.id)
-        db.session.add(comment)
-        db.session.commit()
-    except:
+    #try:
+    comment = Comment("Items", request.form['comment'], request.form['item_id'], current_user.id)
+    db.session.add(comment)
+    db.session.commit()
+    """except:
         raise KeyError
-        abort(403)
+        abort(403)"""
+    return jsonify(data={"success":1, "message":"Commented"})
 
 @app.route('/api/up_vote', methods=['POST'])
 def up_vote():

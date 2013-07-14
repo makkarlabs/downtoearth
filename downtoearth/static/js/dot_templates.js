@@ -64,9 +64,9 @@ var comments_list = doT.template("\
 </div>\
 <div class='enterItem'>\
     <label for='comment'>Comments</label>\
-    <textarea class='comment' placeholder='Add Comment' rows='3' cols='10'></textarea>\
+    <textarea id='{{=value.id}}comment' class='comm' placeholder='Add Comment' rows='3' cols='10'></textarea>\
     <br>\
-    <button class='btn commentSub'>Add Comment</button>\
+    <button class='btn commentSub' data-item-id={{=value.id}} >Add Comment</button>\
 </div>\
 </div>\
 {{~}}\

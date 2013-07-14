@@ -63,7 +63,6 @@ class Comment(db.Model):
     comment = db.Column(db.String(2048))
     up_votes = db.Column(db.Integer)
     down_votes = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime())
     commenter_id = db.Column(db.Integer)
     commenter_name = db.Column(db.String(255))
     def __init__(self,cat_name, comment, cat_id, commenter_id):
@@ -71,7 +70,6 @@ class Comment(db.Model):
         self.comment = comment
         self.up_votes = 0
         self.down_votes = 0
-        self.timestamp = datetime.now()
         self.commenter_id = commenter_id
         self.commenter_name = Connection.query.filter_by(user_id = commenter_id).first().display_name
 
