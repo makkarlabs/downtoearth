@@ -104,6 +104,15 @@ class Tweets(db.Model):
         self.text = text
         self.dp = dp
 
+    @property
+    def serialize(self):
+        return{
+            'store': self.store,
+            'handle': self.handle,
+            'name': self.name,
+            'text': self.text,
+            'dp': self.dp}
+
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)

@@ -333,3 +333,16 @@ def pannithola():
     except KeyError:
         abort(405)
 
+@app.route('/api/tweets')
+def get_tweets():
+    try:
+        store = request.args['q']
+        alltweets = Tweets.query.filter_by(store=store)
+        print alltweets
+        if alltweets is not None:
+            return jsonify(tweets=[i.serialize for i in alltweets.all()])
+        else:
+            return jsonify(tweets=None)
+    except Exception, e:
+        print "Hey"
+        print e
